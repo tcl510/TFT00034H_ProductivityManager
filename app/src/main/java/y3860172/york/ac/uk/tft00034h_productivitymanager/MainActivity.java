@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         //populate
         mCardList = new ArrayList<>();
-        mCardList.add(new Card ("Default Title", "Default Subtitle goes here, more words, words and more words", "a subtitle to behold!", R.drawable.tedted, R.drawable.tedted));
-        mCardList.add(new Card ("Default Title", "Default Subtitle goes here, more words, words and more words", "a subtitle to behold!", R.drawable.tedted, R.drawable.tedted));
+        mCardList.add(new Card ("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
+        mCardList.add(new Card ("Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
 
         //set adapter to recycleview
         mAdapter = new cardAdapter(mCardList,this);
