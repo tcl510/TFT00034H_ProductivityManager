@@ -40,7 +40,6 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.cardViewHolder
         holder.txtSupporting.setText(infoList.get(position).getSupporting());
         holder.imgAvatar.setImageResource(infoList.get(position).getAvatar());
         holder.imgMedia.setImageResource(infoList.get(position).getMedia());
-
     }
 
     @Override

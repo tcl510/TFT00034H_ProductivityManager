@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.cardview.widget.CardView
         style="@style/CardView.Light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,9 +13,63 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/weather_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="@+id/Location"
+                app:layout_constraintTop_toBottomOf="@+id/Location"
+                tools:text="Mostly Sunny" />
+
+            <TextView
+                android:id="@+id/Location"
+                android:layout_width="153dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="16dp"
+                android:text="TextView"
+                android:textSize="23sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Hong Kong"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                />
+
+            <ImageView
+                android:id="@+id/weather_image"
+                android:layout_width="164dp"
+                android:layout_height="174dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toEndOf="@+id/Location"
+                app:layout_constraintTop_toTopOf="@+id/Location"
+                app:srcCompat="@drawable/weather_snow" />
+
+            <TextView
+                android:id="@+id/tempature"
+                android:layout_width="163dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="TextView"
+                android:textSize="70sp"
+                app:layout_constraintBottom_toBottomOf="@+id/weather_image"
+                app:layout_constraintEnd_toStartOf="@+id/weather_image"
+                app:layout_constraintHorizontal_bias="0.666"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/weather_text"
+                app:layout_constraintVertical_bias="1.0"
+                tools:text="23°c" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
