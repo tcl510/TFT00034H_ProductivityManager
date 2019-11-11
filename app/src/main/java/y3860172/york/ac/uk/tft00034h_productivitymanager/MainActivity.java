@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initialize(){
 
+
     }
 
 //    Card tester = new Card ("Default Title", "Default Subtitle goes here, more words, words and more words", "a subtitle to behold!", "tedted.jpg", "tedted.jpg");
