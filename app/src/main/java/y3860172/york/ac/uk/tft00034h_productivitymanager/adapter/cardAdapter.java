@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
@@ -60,6 +58,21 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.cardViewHolder
             txtSupporting = view.findViewById(R.id.supporting_text);
             imgAvatar = view.findViewById(R.id.avatar_image);
             imgMedia = view.findViewById(R.id.media_image);
+        }
+    }
+    public class weatherViewHolder extends RecyclerView.ViewHolder {
+        TextView txtLocation;
+        TextView txtWeather;
+        TextView txtTemperature;
+        ImageView imgWeather;
+
+
+        public weatherViewHolder (View view){
+            super(view);
+            txtLocation = view.findViewById(R.id.weather_text);
+            txtWeather = view.findViewById(R.id.Location);
+            txtTemperature = view.findViewById(R.id.Temperature);
+            imgWeather = view.findViewById(R.id.weather_image);
         }
     }
 }
