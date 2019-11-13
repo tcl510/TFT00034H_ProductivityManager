@@ -27,23 +27,53 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.cardViewHolder
 
     @Override
     public cardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        cardViewHolder gvh = null;
+        View cardView = null;
         //inflating the file
-        View cardView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card, parent, false);
-        cardViewHolder gvh = new cardViewHolder(cardView);
+        switch (viewType) {
+            case 0:
+                cardView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card, parent, false);
+                gvh = new cardViewHolder(cardView);
+                break;
+            case 1:
+                cardView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card2, parent, false);
+                gvh = new cardViewHolder(cardView);
+                break;
+        }
         return gvh;
     }
     @Override
     public void onBindViewHolder(cardViewHolder holder, final int position){
-        holder.txtTitle.setText(infoList.get(position).getTitle());
-        holder.txtSubtitle.setText(infoList.get(position).getSubtitle());
-        holder.txtSupporting.setText(infoList.get(position).getSupporting());
-        holder.imgAvatar.setImageResource(infoList.get(position).getAvatar());
-        holder.imgMedia.setImageResource(infoList.get(position).getMedia());
+//        int viewType = getItemViewType(position);
+        if (getItemViewType(position) == 0) {
+            holder.txtTitle.setText(infoList.get(position).getTitle());
+            holder.txtSubtitle.setText(infoList.get(position).getSubtitle());
+            holder.txtSupporting.setText(infoList.get(position).getSupporting());
+            holder.imgAvatar.setImageResource(infoList.get(position).getAvatar());
+            holder.imgMedia.setImageResource(infoList.get(position).getMedia());
+        }
+        if (getItemViewType(position) == 1){
+            holder.txtTitle.setText(infoList.get(position).getTitle());
+            holder.txtSubtitle.setText(infoList.get(position).getSubtitle());
+            holder.txtSupporting.setText(infoList.get(position).getSupporting());
+//            holder.imgAvatar.setImageResource(infoList.get(position).getAvatar());
+            holder.imgMedia.setImageResource(infoList.get(position).getMedia());
+        }
     }
 
     @Override
     public int getItemCount(){
         return infoList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        String type = infoList.get(position).getType();
+        if (type == "weather"){
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public class cardViewHolder extends RecyclerView.ViewHolder {

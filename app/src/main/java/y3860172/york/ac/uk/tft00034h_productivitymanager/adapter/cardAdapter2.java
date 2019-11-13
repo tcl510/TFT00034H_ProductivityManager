@@ -12,15 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card2;
 
 public class cardAdapter2 {
 
     public class card2Adapter extends RecyclerView.Adapter<card2Adapter.card2ViewHolder>{
-        private List<Card2> infoList;
+        private List<Card> infoList;
         Context context;
 
-        public card2Adapter(List<Card2> infoList, Context context ){
+        public card2Adapter(List<Card> infoList, Context context ){
             this.infoList = infoList;
             this.context = context;
         }
@@ -34,10 +35,10 @@ public class cardAdapter2 {
         }
         @Override
         public void onBindViewHolder(card2ViewHolder holder, final int position){
-            holder.txtLocation.setText(infoList.get(position).getLocation());
-            holder.txtWeather.setText(infoList.get(position).getWeather_state());
-            holder.txtTemperature.setText(infoList.get(position).getTemperature_string());
-            holder.imgWeather.setImageResource(infoList.get(position).getWeather_image());
+            holder.txtLocation.setText(infoList.get(position).getTitle());
+            holder.txtWeather.setText(infoList.get(position).getSubtitle());
+            holder.txtTemperature.setText(infoList.get(position).getSupporting());
+            holder.imgWeather.setImageResource(infoList.get(position).getMedia());
         }
 
         @Override
@@ -54,10 +55,10 @@ public class cardAdapter2 {
 
             public card2ViewHolder (View view){
                 super(view);
-                txtLocation = view.findViewById(R.id.weather_text);
-                txtWeather = view.findViewById(R.id.Location);
-                txtTemperature = view.findViewById(R.id.Temperature);
-                imgWeather = view.findViewById(R.id.weather_image);
+                txtLocation = view.findViewById(R.id.subtitle_text);
+                txtWeather = view.findViewById(R.id.title_text);
+                txtTemperature = view.findViewById(R.id.supporting_text);
+                imgWeather = view.findViewById(R.id.media_image);
             }
         }
     }

@@ -12,13 +12,27 @@ public class Card {
     public String supporting = "a subtitle to behold!";
     public int avatar = R.drawable.tedted;
     public int media = R.drawable.tedted;
+    public String type;
 
-    public Card(String title, String subtitle, String supporting, int avatar, int media) {
+    public Card(String type, String title, String subtitle, String supporting, int avatar, int media) {
+        this.type = type;
         this.title = title;
         this.subtitle = subtitle;
         this.supporting = supporting;
         this.avatar = avatar;
         this.media = media;
+    }
+
+    public String makeWeatherString(float tempature_value){
+        return tempature_value + "°c";
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTitle() {
