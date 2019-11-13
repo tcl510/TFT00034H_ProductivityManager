@@ -14,6 +14,7 @@ import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card2;
 
 public class cardAdapter extends RecyclerView.Adapter<cardAdapter.cardViewHolder>{
     private List<Card> infoList;
@@ -60,27 +61,7 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.cardViewHolder
             imgMedia = view.findViewById(R.id.media_image);
         }
     }
-    public class weatherViewHolder extends RecyclerView.ViewHolder {
-        TextView txtLocation;
-        TextView txtWeather;
-        TextView txtTemperature;
-        ImageView imgWeather;
-
-
-        public weatherViewHolder (View view){
-            super(view);
-            txtLocation = view.findViewById(R.id.weather_text);
-            txtWeather = view.findViewById(R.id.Location);
-            txtTemperature = view.findViewById(R.id.Temperature);
-            imgWeather = view.findViewById(R.id.weather_image);
-        }
-    }
 }
-
-
-
-
-
 
 
 
