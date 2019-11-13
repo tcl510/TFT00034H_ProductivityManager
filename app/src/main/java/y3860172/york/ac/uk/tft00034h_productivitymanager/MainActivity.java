@@ -65,9 +65,11 @@ public class MainActivity extends AppCompatActivity {
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         //populate
         mCardList = new ArrayList<>();
+
+        mCardList.add(new Card ("weather", "Hong Kong", "Cloudy", "25", R.drawable.weather_alert, R.drawable.weather_cloudy));
         mCardList.add(new Card ("card","Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
         mCardList.add(new Card ("card","Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
-        mCardList.add(new Card ("weather", "Hong Kong", "Cloudy", "25", R.drawable.weather_alert, R.drawable.weather_cloudy));
+
         //set adapter to recycleview
         mAdapter = new cardAdapter(mCardList,this);
         mRecycleView.setAdapter(mAdapter);
