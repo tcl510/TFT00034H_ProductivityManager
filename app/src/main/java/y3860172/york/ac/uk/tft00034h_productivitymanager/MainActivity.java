@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String weather_current;
 
-//    private FusedLocationProviderClient fusedLocationClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         mCardList = new ArrayList<>();
 
         Log.d("pass", "card");
-        mCardList.add(new Card ("weather", "Hong Kong", weather_current, "25", R.drawable.weather_alert, R.drawable.weather_cloudy));
+        mCardList.add(new Card ("weather", "York", weather_current, "25", R.drawable.weather_alert, R.drawable.weather_cloudy));
         mCardList.add(new Card ("card","Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
         mCardList.add(new Card ("card","Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
 
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void initialize(){
         String key = "7676be54a54f4b58b79d8d3a5cf16936";
-        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7676be54a54f4b58b79d8d3a5cf16936");
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=7676be54a54f4b58b79d8d3a5cf16936");
 
     }
     public void tester(View view){
