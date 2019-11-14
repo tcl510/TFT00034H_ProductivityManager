@@ -31,19 +31,21 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card2;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecycleView;
-
     private cardAdapter mAdapter;
-
-
     private List<Card> mCardList, mWeatherList;
 
+
     public String weather_current;
+
+//    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initialize();
+        card();
+        weather();
 //        getCat();
 
 
@@ -51,8 +53,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-//        card();
-        weather();
+
+    }
+
+    @Override
+    protected void onResume(){
+        mAdapter.notifyDataSetChanged();
+        super.onResume();
+
     }
 
 
@@ -77,31 +85,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
     public void initialize(){
-        new GetWeather().execute("https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=b6907d289e10d714a6e88b30761fae22");
+        String key = "7676be54a54f4b58b79d8d3a5cf16936";
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7676be54a54f4b58b79d8d3a5cf16936");
 
     }
     public void tester(View view){
-        new GetWeather().execute("https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22");
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7676be54a54f4b58b79d8d3a5cf16936");
+
+//        new GetWeather().execute("https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22");
     }
 
-    public void setFact(String weather_state) {
-//        Card temp = mCardList.get(0);
-//        temp.subtitle = weather_state;
-//        mCardList.set(0, temp);
+    public void setFact(String weather_state, String tempature) {
+        Card temp = mCardList.get(0);
+        temp.subtitle = weather_state;
+        temp.supporting = tempature;
+        mCardList.set(0, temp);
         weather_current = weather_state;
-        card();
+        mAdapter.notifyDataSetChanged();
     }
 
     private class GetWeather extends AsyncTask<String, Void, String> {
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if(result.length()==0) {//remember we returned an empty string if there was an error. In that case lets return an error message.
-                setFact("Error!");
+//                setFact("Error!");
                 return;
             }
 
@@ -166,20 +167,35 @@ public class MainActivity extends AppCompatActivity {
 
             //We have to grab the fact out of the JSON.
             String weather_state;
+            String weatherMain = "";
+            String tempature = "";
             try {
                 JSONObject json = new JSONObject(result);
                 JSONArray weather_states = json.getJSONArray("weather");
                 JSONObject first_obj = weather_states.getJSONObject(0);
 
-                weather_state = first_obj.getString("main");
-                Log.d("pass", weather_state);
+                JSONObject main = json.getJSONObject("main");
+
+                weatherMain = first_obj.getString("description");
+                tempature = main.getString("temp");
+                float temp_num = Float.parseFloat(tempature);
+                tempature = makeWeatherString(convert(temp_num));
+
             }
             catch(JSONException e) {
                 weather_state = e.getLocalizedMessage(); //if there is an error in the JSON.
                 Log.d("something", e.toString());
             }
-            setFact(weather_state); //once the data has been collected, set the cat fact on the screen
+            setFact(weatherMain, tempature); //once the data has been collected, set the cat fact on the screen
         }
+    }
+
+
+    public String makeWeatherString(float tempature_value){
+        return Math.round(tempature_value) + "°c";
+    }
+    public float convert(float temp){
+        return (float) (temp - 273);
     }
 }
 

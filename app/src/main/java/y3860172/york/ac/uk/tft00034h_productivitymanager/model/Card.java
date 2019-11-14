@@ -23,9 +23,7 @@ public class Card {
         this.media = media;
     }
 
-    public String makeWeatherString(float tempature_value){
-        return tempature_value + "°c";
-    }
+
 
     public String getType() {
         return type;
