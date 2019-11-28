@@ -34,7 +34,7 @@
                 tools:srcCompat="@drawable/tedted" />
 
             <TextView
-                android:id="@+id/title_text"
+                android:id="@+id/event_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -50,7 +50,7 @@
                 tools:text="Ted Ted" />
 
             <TextView
-                android:id="@+id/subtitle_text"
+                android:id="@+id/location_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"

@@ -14,7 +14,6 @@ import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
-import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card2;
 
 public class cardAdapter extends RecyclerView.Adapter<cardAdapter.cardViewHolder>{
     private List<Card> infoList;
@@ -74,6 +73,7 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.cardViewHolder
         } else {
             return 0;
         }
+//        return infoList.get(position).getTemplate();
     }
 
     public class cardViewHolder extends RecyclerView.ViewHolder {
@@ -84,8 +84,8 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.cardViewHolder
         ImageView imgMedia;
         public cardViewHolder (View view){
             super(view);
-            txtTitle = view.findViewById(R.id.title_text);
-            txtSubtitle = view.findViewById(R.id.subtitle_text);
+            txtTitle = view.findViewById(R.id.event_title);
+            txtSubtitle = view.findViewById(R.id.location_text);
             txtSupporting = view.findViewById(R.id.supporting_text);
             imgAvatar = view.findViewById(R.id.avatar_image);
             imgMedia = view.findViewById(R.id.media_image);

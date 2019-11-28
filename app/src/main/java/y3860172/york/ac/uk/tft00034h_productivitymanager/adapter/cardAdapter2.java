@@ -13,7 +13,6 @@ import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
-import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card2;
 
 public class cardAdapter2 {
 
@@ -55,8 +54,8 @@ public class cardAdapter2 {
 
             public card2ViewHolder (View view){
                 super(view);
-                txtLocation = view.findViewById(R.id.subtitle_text);
-                txtWeather = view.findViewById(R.id.title_text);
+                txtLocation = view.findViewById(R.id.location_text);
+                txtWeather = view.findViewById(R.id.event_title);
                 txtTemperature = view.findViewById(R.id.supporting_text);
                 imgWeather = view.findViewById(R.id.media_image);
             }

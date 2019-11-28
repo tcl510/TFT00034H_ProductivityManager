@@ -1,6 +1,7 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.model;
 
 import android.media.Image;
+import android.view.View;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
 
@@ -72,5 +73,7 @@ public class Card {
     public void setMedia(int media) {
         this.media = media;
     }
+
+
 }
 
