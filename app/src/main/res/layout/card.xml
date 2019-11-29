@@ -18,14 +18,13 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/avatar_image"
+                android:id="@+id/tester_card_avatar_image"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:padding="4dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintBottom_toTopOf="@+id/media_image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
 
@@ -34,7 +33,7 @@
                 tools:srcCompat="@drawable/tedted" />
 
             <TextView
-                android:id="@+id/event_title"
+                android:id="@+id/tester_card_title_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -45,12 +44,12 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#DE000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/avatar_image"
-                app:layout_constraintTop_toTopOf="@+id/avatar_image"
+                app:layout_constraintStart_toEndOf="@+id/tester_card_avatar_image"
+                app:layout_constraintTop_toTopOf="@+id/tester_card_avatar_image"
                 tools:text="Ted Ted" />
 
             <TextView
-                android:id="@+id/location_text"
+                android:id="@+id/tester_card_subtitle_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -60,60 +59,58 @@
                 android:maxLines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#8A000000"
-                app:layout_constraintBottom_toBottomOf="@+id/avatar_image"
+                app:layout_constraintBottom_toBottomOf="@+id/tester_card_avatar_image"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/avatar_image"
+                app:layout_constraintStart_toEndOf="@+id/tester_card_avatar_image"
                 tools:text="Ted Ted's Status" />
 
             <ImageView
-                android:id="@+id/media_image"
+                android:id="@+id/tester_card_media_image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="12dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintBottom_toTopOf="@+id/supporting_text"
                 app:layout_constraintDimensionRatio="H,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/avatar_image"
+                app:layout_constraintTop_toBottomOf="@+id/tester_card_avatar_image"
 
                 app:srcCompat="@drawable/tedted"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
-                android:id="@+id/supporting_text"
+                android:id="@+id/tester_card_supporting_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:lineSpacingExtra="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="#DE000000"
-                app:layout_constraintBottom_toTopOf="@+id/action_button_1"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/media_image" />
+                app:layout_constraintTop_toBottomOf="@+id/tester_card_media_image" />
 
             <Button
-                android:id="@+id/action_button_1"
+                android:id="@+id/tester_card_action_button_1"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
                 android:minWidth="0dp"
                 android:onClick="tester"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="test"
                 android:textColor="#DE000000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/supporting_text" />
+                app:layout_constraintStart_toStartOf="@+id/tester_card_avatar_image"
+                app:layout_constraintTop_toBottomOf="@+id/tester_card_supporting_text" />
 
             <Button
-                android:id="@+id/action_button_2"
+                android:id="@+id/tester_card_action_button_2"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -122,8 +119,8 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:textColor="#DE000000"
-                app:layout_constraintStart_toEndOf="@+id/action_button_1"
-                app:layout_constraintTop_toTopOf="@+id/action_button_1" />
+                app:layout_constraintStart_toEndOf="@+id/tester_card_action_button_1"
+                app:layout_constraintTop_toTopOf="@+id/tester_card_action_button_1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,87 +8,138 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 
-public class cardAdapter extends RecyclerView.Adapter<cardAdapter.cardViewHolder>{
-    private List<Card> infoList;
+public class cardAdapter extends RecyclerView.Adapter{
+    public List<Card> infoList;
     Context context;
 
-    public cardAdapter(List<Card> infoList, Context context ){
+    public cardAdapter(List<Card> infoList, Context context){
         this.infoList = infoList;
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public cardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        cardViewHolder gvh = null;
-        View cardView = null;
-        //inflating the file
-        switch (viewType) {
-            case 0:
-                cardView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card, parent, false);
-                gvh = new cardViewHolder(cardView);
-                break;
-            case 1:
-                cardView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card2, parent, false);
-                gvh = new cardViewHolder(cardView);
-                break;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView;
+        switch(viewType){
+            case Card.CARD_TESTER_CARD:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main,parent,false);
+                return new tester_cardViewHolder(itemView);
+            case Card.CARD_WEATHER:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main,parent,false);
+                return new weather_cardViewHolder(itemView);
+            default:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main,parent,false);
+                return new tester_cardViewHolder(itemView);
         }
-        return gvh;
+
     }
+
     @Override
-    public void onBindViewHolder(cardViewHolder holder, final int position){
-//        int viewType = getItemViewType(position);
-        if (getItemViewType(position) == 0) {
-            holder.txtTitle.setText(infoList.get(position).getTitle());
-            holder.txtSubtitle.setText(infoList.get(position).getSubtitle());
-            holder.txtSupporting.setText(infoList.get(position).getSupporting());
-            holder.imgAvatar.setImageResource(infoList.get(position).getAvatar());
-            holder.imgMedia.setImageResource(infoList.get(position).getMedia());
-        }
-        if (getItemViewType(position) == 1){
-            holder.txtTitle.setText(infoList.get(position).getTitle());
-            holder.txtSubtitle.setText(infoList.get(position).getSubtitle());
-            holder.txtSupporting.setText(infoList.get(position).getSupporting());
-//            holder.imgAvatar.setImageResource(infoList.get(position).getAvatar());
-            holder.imgMedia.setImageResource(infoList.get(position).getMedia());
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        switch (getItemViewType(position)){
+            case Card.CARD_TESTER_CARD:
+                ((tester_cardViewHolder) holder).bindView(position);
+                break;
+            case Card.CARD_WEATHER:
+                ((weather_cardViewHolder) holder).bindView(position);
+                break;
+            default:
+                ((weather_cardViewHolder) holder).bindView(position);
+                break;
         }
     }
 
     @Override
-    public int getItemCount(){
-        return infoList.size();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        String type = infoList.get(position).getType();
-        if (type == "weather"){
-            return 1;
-        } else {
+    public int getItemCount() {
+        if (infoList == null){
             return 0;
+        } else {
+            return infoList.size();
         }
-//        return infoList.get(position).getTemplate();
     }
 
-    public class cardViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position){
+        return infoList.get(position).getType();
+    }
+
+    public void setInfoList(List<? extends Card> thisinfoList){
+        if (infoList == null){
+            infoList = new ArrayList<>();
+        }
+        infoList.clear();
+        infoList.addAll(thisinfoList);
+        notifyDataSetChanged();
+    }
+
+    public interface holder{
+        void bindView(int position);
+    }
+
+
+    class tester_cardViewHolder extends RecyclerView.ViewHolder implements holder{
         TextView txtTitle;
         TextView txtSubtitle;
         TextView txtSupporting;
         ImageView imgAvatar;
         ImageView imgMedia;
-        public cardViewHolder (View view){
-            super(view);
-            txtTitle = view.findViewById(R.id.event_title);
-            txtSubtitle = view.findViewById(R.id.location_text);
-            txtSupporting = view.findViewById(R.id.supporting_text);
-            imgAvatar = view.findViewById(R.id.avatar_image);
-            imgMedia = view.findViewById(R.id.media_image);
+        public tester_cardViewHolder(View itemView){
+            super(itemView);
+            //findviewby id
+            txtTitle = itemView.findViewById(R.id.tester_card_title_text);
+            txtSubtitle = itemView.findViewById(R.id.tester_card_subtitle_text);
+            txtSupporting = itemView.findViewById(R.id.tester_card_supporting_text);
+            imgAvatar = itemView.findViewById(R.id.tester_card_avatar_image);
+            imgMedia = itemView.findViewById(R.id.tester_card_media_image);
+
+        }
+
+        @Override
+        public void bindView(int position) {
+            tester_card card = (tester_card) infoList.get(position);
+            //bind data to views
+            //textView.setText()..
+            txtTitle.setText(card.getTitle());
+            txtSubtitle.setText(card.getSubtitle());
+            txtSupporting.setText(card.supporting);
+            imgAvatar.setImageResource(card.getMedia());
+            imgAvatar.setImageResource(card.getAvatar());
+        }
+    }
+
+    class weather_cardViewHolder extends RecyclerView.ViewHolder implements holder{
+        TextView weatherCondition;
+        TextView weatherLocation;
+        TextView weatherTempature;
+        ImageView weatherImage;
+        public weather_cardViewHolder(View itemView){
+
+            super(itemView);
+            //fineviewby id
+            weatherCondition = itemView.findViewById(R.id.weather_condition);
+            weatherLocation = itemView.findViewById(R.id.weather_location);
+            weatherTempature = itemView.findViewById(R.id.weather_tempature);
+            weatherImage = itemView.findViewById(R.id.weather_image);
+        }
+        @Override
+        public void bindView(int position){
+            weather_card card = (weather_card) infoList.get(position);
+            weatherCondition.setText(card.getCondition());
+            weatherLocation.setText(card.getLocation());
+            weatherTempature.setText(card.getTemperature_string());
+            weatherImage.setImageResource(card.getWeather_image());
         }
     }
 }
@@ -98,3 +149,5 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.cardViewHolder
 
 //credits to https://iteritory.com/android-cardview-tutorial-with-example/
 //cards system based on android materials
+
+//inspired by https://gist.github.com/keinix/46848bd52117f533c26b20300ba6abda
