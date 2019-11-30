@@ -24,9 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.cardAdapter;
-//import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.cardAdapter2;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
-//import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card2;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 
@@ -48,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         initialize();
         card();
         weather();
-//        getCat();
-
 
     }
     @Override
@@ -73,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         //populate
         mCardList = new ArrayList<>();
-
-        Log.d("pass", "card");
         mCardList.add(new weather_card("York", "Sunny", 25));
         mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
         mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
@@ -87,21 +81,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    String key = "7676be54a54f4b58b79d8d3a5cf16936";
     public void initialize(){
-        String key = "7676be54a54f4b58b79d8d3a5cf16936";
-        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=7676be54a54f4b58b79d8d3a5cf16936");
+    //todo add gps
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=" + key);
     }
     public void tester(View view){
-        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=7676be54a54f4b58b79d8d3a5cf16936");
 
-//        new GetWeather().execute("https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22");
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + key);
+
     }
 
     public void setFact(String weather_state, String tempature, String icon, String location) {
 //        Card temp_cardlist = mCardList.get(0);
         weather_card temp = (weather_card)mCardList.get(0);
         //set strings
-        temp.condition = weather_state;
+        temp.condition = weather_state; //todo capitalize first word
         temp.temperature_string = tempature;
         //set picture
         temp.weather_image = ("http://openweathermap.org/img/wn/" + icon + "@2x.png");
@@ -109,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         //set location
         temp.location = location;
 
-        mCardList.set(0, temp);
+        final Card set = mCardList.set(0, temp);
         weather_current = weather_state;
         mAdapter.notifyDataSetChanged();
     }
@@ -209,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         return Math.round(tempature_value) + "°c";
     }
     public float convert(float temp){
-        return (float) (temp - 273);
+        return temp - 273;
     }
 }
 
