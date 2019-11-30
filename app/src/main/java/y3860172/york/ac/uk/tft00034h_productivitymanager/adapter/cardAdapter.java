@@ -12,6 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,7 +143,12 @@ public class cardAdapter extends RecyclerView.Adapter{
             weatherCondition.setText(card.getCondition());
             weatherLocation.setText(card.getLocation());
             weatherTempature.setText(card.getTemperature_string());
-            weatherImage.setImageResource(card.getWeather_image());
+
+//            weatherImage.setImageResource(card.getWeather_image());
+            //14:36 https://www.youtube.com/watch?v=Vyqz_-sJGFk
+
+            Glide.with(context).load(card.weather_image).into(weatherImage);
+
         }
     }
 }

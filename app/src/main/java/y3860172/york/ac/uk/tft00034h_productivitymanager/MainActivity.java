@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         mCardList = new ArrayList<>();
 
         Log.d("pass", "card");
-        mCardList.add(new weather_card("York", "Sunny", 25, R.drawable.weather_sunny));
+        mCardList.add(new weather_card("York", "Sunny", 25));
         mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
         mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
 
@@ -92,16 +92,23 @@ public class MainActivity extends AppCompatActivity {
         new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=7676be54a54f4b58b79d8d3a5cf16936");
     }
     public void tester(View view){
-        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7676be54a54f4b58b79d8d3a5cf16936");
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=7676be54a54f4b58b79d8d3a5cf16936");
 
 //        new GetWeather().execute("https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22");
     }
 
-    public void setFact(String weather_state, String tempature) {
+    public void setFact(String weather_state, String tempature, String icon, String location) {
 //        Card temp_cardlist = mCardList.get(0);
         weather_card temp = (weather_card)mCardList.get(0);
+        //set strings
         temp.condition = weather_state;
         temp.temperature_string = tempature;
+        //set picture
+        temp.weather_image = ("http://openweathermap.org/img/wn/" + icon + "@2x.png");
+
+        //set location
+        temp.location = location;
+
         mCardList.set(0, temp);
         weather_current = weather_state;
         mAdapter.notifyDataSetChanged();
@@ -171,6 +178,8 @@ public class MainActivity extends AppCompatActivity {
             String weather_state;
             String weatherMain = "";
             String tempature = "";
+            String icon = "02d";
+            String location = "York";
             try {
                 JSONObject json = new JSONObject(result);
                 JSONArray weather_states = json.getJSONArray("weather");
@@ -182,13 +191,16 @@ public class MainActivity extends AppCompatActivity {
                 tempature = main.getString("temp");
                 float temp_num = Float.parseFloat(tempature);
                 tempature = makeWeatherString(convert(temp_num));
+                icon = first_obj.getString("icon");
+                location = json.getString("name");
+
 
             }
             catch(JSONException e) {
                 weather_state = e.getLocalizedMessage(); //if there is an error in the JSON.
                 Log.d("something", e.toString());
             }
-            setFact(weatherMain, tempature); //once the data has been collected, set the cat fact on the screen
+            setFact(weatherMain, tempature, icon, location); //once the data has been collected, set the cat fact on the screen
         }
     }
 

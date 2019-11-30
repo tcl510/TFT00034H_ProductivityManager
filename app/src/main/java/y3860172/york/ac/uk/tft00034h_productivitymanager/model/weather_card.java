@@ -1,5 +1,7 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.model;
 
+import java.net.URL;
+
 public class weather_card implements Card  {
 
     @Override
@@ -10,13 +12,14 @@ public class weather_card implements Card  {
     public String condition;
     public String temperature_string;
     public float temperature;
-    public int weather_image;
+    public String weather_image = "http://openweathermap.org/img/wn/10d@2x.png";
+    public URL url;
 
-    public weather_card(String location, String condition, float temperature, int weather_image) {
+    public weather_card(String location, String condition, float temperature) {
         this.location = location;
         this.condition = condition;
         this.temperature_string = makeTemperatureString(temperature);
-        this.weather_image = weather_image;
+//        this.weather_image = weather_image;
     }
 
     public String makeTemperatureString(float temperature){
@@ -35,7 +38,7 @@ public class weather_card implements Card  {
         return temperature_string;
     }
 
-    public int getWeather_image() {
+    public String getWeather_image() {
         return weather_image;
     }
 }
