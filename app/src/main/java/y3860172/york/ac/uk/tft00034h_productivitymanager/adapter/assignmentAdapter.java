@@ -62,7 +62,6 @@ public class assignmentAdapter extends RecyclerView.Adapter {
                 TempAssignmentList = assignmentList;
                 return assignmentList.size();
             }
-
         }
     }
 
