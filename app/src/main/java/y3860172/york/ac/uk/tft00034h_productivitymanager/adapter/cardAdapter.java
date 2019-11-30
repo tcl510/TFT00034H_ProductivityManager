@@ -145,13 +145,13 @@ public class cardAdapter extends RecyclerView.Adapter{
 
         public void bindView(int position){
             weather_card card = (weather_card) infoList.get(position);
-            weatherCondition.setText(card.getCondition());
+             weatherCondition.setText(card.getCondition());
             weatherLocation.setText(card.getLocation());
             weatherTempature.setText(card.getTemperature_string());
 
 //            weatherImage.setImageResource(card.getWeather_image());
             //14:36 https://www.youtube.com/watch?v=Vyqz_-sJGFk
-            
+
             weatherImage.setText(card.getWeather_image());
 
 //            Glide.with(context).load(card.weather_image).into(weatherImage);

@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 //        assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
 //        assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
 
-        mCardList.add(new weather_card("York", "Sunny", 25));
+        mCardList.add(new weather_card());
 
         mCardList.add(new assignments_card(assignments));
 
@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
         new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=" + key);
     }
     public void tester(View view){
-
-        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + key);
         assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + key);
+
 
     }
 
@@ -186,10 +186,10 @@ public class MainActivity extends AppCompatActivity {
 
             //We have to grab the fact out of the JSON.
             String weather_state;
-            String weatherMain = "";
-            String tempature = "";
-            String icon = "02d";
-            String location = "York";
+            String weatherMain;
+            String tempature;
+            String icon;
+            String location;
             try {
                 JSONObject json = new JSONObject(result);
                 JSONArray weather_states = json.getJSONArray("weather");
@@ -218,13 +218,13 @@ public class MainActivity extends AppCompatActivity {
 
                 location = json.getString("name");
 
-
+                setFact(weatherMain, tempature, icon, location);
             }
             catch(JSONException e) {
                 weather_state = e.getLocalizedMessage(); //if there is an error in the JSON.
                 Log.d("something", e.toString());
             }
-            setFact(weatherMain, tempature, icon, location); //once the data has been collected, set the cat fact on the screen
+             //once the data has been collected, set the cat fact on the screen
         }
     }
 

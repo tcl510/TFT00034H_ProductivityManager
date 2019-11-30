@@ -21,6 +21,12 @@ public class weather_card implements Card  {
         this.temperature_string = makeTemperatureString(temperature);
 //        this.weather_image = weather_image;
     }
+    public weather_card(){
+        this.location = "--";
+        this.condition = "Connect to the internet for weather data";//todo not show weather card unless theres info
+        this.temperature_string = null;
+        this.weather_image = null;
+    }
 
     public String makeTemperatureString(float temperature){
         return String.valueOf(temperature) + "°C";
