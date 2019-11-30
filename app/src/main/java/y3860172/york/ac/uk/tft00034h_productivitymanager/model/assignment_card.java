@@ -4,7 +4,6 @@ import java.sql.Time;
 import java.util.List;
 
 public class assignment_card implements Card { //todo add button add more functionality
-    //todo Add empty text
 
     @Override
     public int getType() {

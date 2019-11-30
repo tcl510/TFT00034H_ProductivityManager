@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     String key = "7676be54a54f4b58b79d8d3a5cf16936";
     public void initialize(){
-    //todo add gps
+    //todo add gps https://github.com/rohitsthaa/retrofit-openweather
         new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=" + key);
     }
     public void tester(View view){

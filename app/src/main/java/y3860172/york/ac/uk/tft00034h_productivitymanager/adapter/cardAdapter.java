@@ -27,7 +27,7 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 public class cardAdapter extends RecyclerView.Adapter{
     public List<Card> infoList;
     Context context;
-    private assignmentAdapter massignmentAdapter;//todo add assignmentAdapter
+    private assignmentAdapter massignmentAdapter;
 
     public cardAdapter(List<Card> infoList, Context context){
         this.infoList = infoList;
