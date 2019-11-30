@@ -24,6 +24,6 @@ public class assignment_card implements Card { //todo add button add more functi
     }
 
     public Time getAssigment_due() {
-        return assigment_due;
+        return assigment_due; //todo parse time
     }
 }

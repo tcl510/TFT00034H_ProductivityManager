@@ -132,7 +132,7 @@ public class cardAdapter extends RecyclerView.Adapter{
         TextView weatherCondition;
         TextView weatherLocation;
         TextView weatherTempature;
-        ImageView weatherImage;
+        TextView weatherImage;
         public weather_cardViewHolder(View itemView){
 
             super(itemView);
@@ -151,8 +151,10 @@ public class cardAdapter extends RecyclerView.Adapter{
 
 //            weatherImage.setImageResource(card.getWeather_image());
             //14:36 https://www.youtube.com/watch?v=Vyqz_-sJGFk
+            
+            weatherImage.setText(card.getWeather_image());
 
-            Glide.with(context).load(card.weather_image).into(weatherImage);
+//            Glide.with(context).load(card.weather_image).into(weatherImage);
 
         }
     }

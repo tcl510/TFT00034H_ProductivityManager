@@ -12,7 +12,7 @@ public class weather_card implements Card  {
     public String condition;
     public String temperature_string;
     public float temperature;
-    public String weather_image = "http://openweathermap.org/img/wn/10d@2x.png";
+    public String weather_image = "";
     public URL url;
 
     public weather_card(String location, String condition, float temperature) {

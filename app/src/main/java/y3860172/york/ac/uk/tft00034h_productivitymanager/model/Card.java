@@ -16,7 +16,7 @@ public interface Card {
     int CARD_FIRST_THING = R.layout.list_of;
     int CARD_ASSIGNMENTS = R.layout.list_of;
     int CARD_ASSIGNMENT = R.layout.assignment;
-    int CARD_CALENDER_EVENT = R.layout.calender_event;
+    int CARD_CALENDER_EVENT = R.layout.calender_event;//todo make calender view
 
     int getType();
 }

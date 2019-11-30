@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         temp.condition = weather_state; //todo capitalize first word
         temp.temperature_string = tempature;
         //set picture
-        temp.weather_image = ("http://openweathermap.org/img/wn/" + icon + "@2x.png");
+        temp.weather_image = icon;
 
         //set location
         temp.location = location;
@@ -201,7 +201,21 @@ public class MainActivity extends AppCompatActivity {
                 tempature = main.getString("temp");
                 float temp_num = Float.parseFloat(tempature);
                 tempature = makeWeatherString(convert(temp_num));
-                icon = first_obj.getString("icon");
+
+
+                String icon_temp = first_obj.getString("icon");
+                char night_day_char = icon_temp.charAt(2);
+                String night_day = String.valueOf(night_day_char);
+                if (night_day == "d") {
+                    int resID = getResources().getIdentifier("wi_owm_day_" + first_obj.getString("id"), "string", getPackageName());
+                    icon = getString(resID);
+                } else {
+                    int resID = getResources().getIdentifier("wi_owm_night_" + first_obj.getString("id"), "string", getPackageName());
+                    icon = getString(resID);
+                }
+                Log.d("something",first_obj.getString("id"));
+//                icon = first_obj.getString("id");
+
                 location = json.getString("name");
 
 
