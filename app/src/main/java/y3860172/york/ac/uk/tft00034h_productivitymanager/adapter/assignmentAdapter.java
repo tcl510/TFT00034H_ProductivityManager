@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+//import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,12 +19,12 @@ import java.util.List;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignment_card;
-import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
+//import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
 
 public class assignmentAdapter extends RecyclerView.Adapter {
-    public List<Card> TempAssignmentList;
-    public List<Card> assignmentList;
-    Context context;
+    private List<Card> TempAssignmentList = new ArrayList<>();
+    private List<Card> assignmentList;
+    private Context context;
 
 
 
@@ -84,7 +84,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
         TextView due;
         TextView empty;
         Button button;
-        public assignment_cardViewHolder(View itemView){
+        private assignment_cardViewHolder(View itemView){
             super(itemView);
             //findviewby id
             title = itemView.findViewById(R.id.assignment_title);
@@ -94,7 +94,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
         }
 
 
-        public void bindView(int position) {
+        private void bindView(int position) {
             assignment_card card = (assignment_card) TempAssignmentList.get(position);
 
             //bind data to views

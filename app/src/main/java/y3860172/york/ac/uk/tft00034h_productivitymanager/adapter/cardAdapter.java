@@ -15,11 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import org.w3c.dom.Text;
-
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,7 +123,7 @@ public class cardAdapter extends RecyclerView.Adapter{
             txtTitle.setText(card.getTitle());
             txtSubtitle.setText(card.getSubtitle());
             txtSupporting.setText(card.supporting);
-            imgAvatar.setImageResource(card.getMedia());
+            imgMedia.setImageResource(card.getMedia());
             imgAvatar.setImageResource(card.getAvatar());
         }
     }

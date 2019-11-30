@@ -17,14 +17,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/weather_image"
-                android:layout_width="154dp"
-                android:layout_height="160dp"
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:text="@string/wi_owm_day_771"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/weather_location"
-                app:srcCompat="@drawable/weather_sunny" />
+                tools:text="@string/wi_owm_day_771" />
+
+            <ImageView
+                android:id="@+id/weather_image"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_marginEnd="16dp"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/weather_location"
+                app:srcCompat="@drawable/weather_10d"
+                tools:srcCompat="@drawable/weather_10d" />
 
             <TextView
                 android:id="@+id/weather_tempature"
@@ -55,6 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:scaleType="fitXY"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintStart_toStartOf="@+id/weather_location"
                 app:layout_constraintTop_toBottomOf="@+id/weather_location"
