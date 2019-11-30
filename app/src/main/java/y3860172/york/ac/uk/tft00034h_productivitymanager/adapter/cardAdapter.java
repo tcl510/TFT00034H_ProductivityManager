@@ -2,6 +2,7 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager.adapter;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +35,13 @@ public class cardAdapter extends RecyclerView.Adapter{
         View itemView;
         switch(viewType){
             case Card.CARD_TESTER_CARD:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main,parent,false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card,parent,false);
                 return new tester_cardViewHolder(itemView);
             case Card.CARD_WEATHER:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main,parent,false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card2,parent,false);
                 return new weather_cardViewHolder(itemView);
             default:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main,parent,false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_of,parent,false);
                 return new tester_cardViewHolder(itemView);
         }
 
@@ -84,17 +85,15 @@ public class cardAdapter extends RecyclerView.Adapter{
         notifyDataSetChanged();
     }
 
-    public interface holder{
-        void bindView(int position);
-    }
 
 
-    class tester_cardViewHolder extends RecyclerView.ViewHolder implements holder{
-        TextView txtTitle;
-        TextView txtSubtitle;
-        TextView txtSupporting;
-        ImageView imgAvatar;
-        ImageView imgMedia;
+
+    class tester_cardViewHolder extends RecyclerView.ViewHolder {
+        public TextView txtTitle;
+        public TextView txtSubtitle;
+        public TextView txtSupporting;
+        public ImageView imgAvatar;
+        public ImageView imgMedia;
         public tester_cardViewHolder(View itemView){
             super(itemView);
             //findviewby id
@@ -103,12 +102,12 @@ public class cardAdapter extends RecyclerView.Adapter{
             txtSupporting = itemView.findViewById(R.id.tester_card_supporting_text);
             imgAvatar = itemView.findViewById(R.id.tester_card_avatar_image);
             imgMedia = itemView.findViewById(R.id.tester_card_media_image);
-
         }
 
-        @Override
+
         public void bindView(int position) {
             tester_card card = (tester_card) infoList.get(position);
+            Log.d("something", card.getSubtitle());
             //bind data to views
             //textView.setText()..
             txtTitle.setText(card.getTitle());
@@ -119,7 +118,7 @@ public class cardAdapter extends RecyclerView.Adapter{
         }
     }
 
-    class weather_cardViewHolder extends RecyclerView.ViewHolder implements holder{
+    class weather_cardViewHolder extends RecyclerView.ViewHolder {
         TextView weatherCondition;
         TextView weatherLocation;
         TextView weatherTempature;
@@ -133,7 +132,7 @@ public class cardAdapter extends RecyclerView.Adapter{
             weatherTempature = itemView.findViewById(R.id.weather_tempature);
             weatherImage = itemView.findViewById(R.id.weather_image);
         }
-        @Override
+
         public void bindView(int position){
             weather_card card = (weather_card) infoList.get(position);
             weatherCondition.setText(card.getCondition());

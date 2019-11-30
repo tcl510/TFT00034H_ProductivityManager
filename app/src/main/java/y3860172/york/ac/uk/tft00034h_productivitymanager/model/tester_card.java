@@ -10,7 +10,7 @@ public class tester_card implements Card{
     public int avatar = R.drawable.tedted;
     public int media = R.drawable.tedted;
 
-    public tester_card(String type, String title, String subtitle, String supporting, int avatar, int media) {
+    public tester_card(String title, String subtitle, String supporting, int avatar, int media) {
         this.title = title;
         this.subtitle = subtitle;
         this.supporting = supporting;
