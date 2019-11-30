@@ -20,11 +20,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.cardAdapter;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignment_card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignments_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecycleView;
     private cardAdapter mAdapter;
     private List<Card> mCardList;
+    private List<Card> assignments;
 
 
     public String weather_current;
@@ -69,7 +73,15 @@ public class MainActivity extends AppCompatActivity {
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         //populate
         mCardList = new ArrayList<>();
+        assignments = new ArrayList<>();
+//        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
+//        assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
+//        assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
+
         mCardList.add(new weather_card("York", "Sunny", 25));
+
+        mCardList.add(new assignments_card(assignments));
+
         mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
         mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
 
@@ -89,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
     public void tester(View view){
 
         new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + key);
+        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
 
     }
 

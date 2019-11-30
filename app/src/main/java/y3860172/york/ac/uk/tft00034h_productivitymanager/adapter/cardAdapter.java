@@ -10,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+
+import org.w3c.dom.Text;
 
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -22,12 +25,14 @@ import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignments_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 
 public class cardAdapter extends RecyclerView.Adapter{
     public List<Card> infoList;
     Context context;
+    private assignmentAdapter massignmentAdapter;//todo add assignmentAdapter
 
     public cardAdapter(List<Card> infoList, Context context){
         this.infoList = infoList;
@@ -45,6 +50,9 @@ public class cardAdapter extends RecyclerView.Adapter{
             case Card.CARD_WEATHER:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card2,parent,false);
                 return new weather_cardViewHolder(itemView);
+            case Card.CARD_ASSIGNMENTS:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_of,parent,false);
+                return new assignments_cardViewHolder(itemView);
             default:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_of,parent,false);
                 return new tester_cardViewHolder(itemView);
@@ -61,8 +69,10 @@ public class cardAdapter extends RecyclerView.Adapter{
             case Card.CARD_WEATHER:
                 ((weather_cardViewHolder) holder).bindView(position);
                 break;
+            case Card.CARD_ASSIGNMENTS:
+                ((assignments_cardViewHolder) holder).bindView(position);
             default:
-                ((weather_cardViewHolder) holder).bindView(position);
+                ((assignments_cardViewHolder) holder).bindView(position);
                 break;
         }
     }
@@ -94,11 +104,11 @@ public class cardAdapter extends RecyclerView.Adapter{
 
 
     class tester_cardViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtTitle;
-        public TextView txtSubtitle;
-        public TextView txtSupporting;
-        public ImageView imgAvatar;
-        public ImageView imgMedia;
+        TextView txtTitle;
+        TextView txtSubtitle;
+        TextView txtSupporting;
+        ImageView imgAvatar;
+        ImageView imgMedia;
         public tester_cardViewHolder(View itemView){
             super(itemView);
             //findviewby id
@@ -148,6 +158,34 @@ public class cardAdapter extends RecyclerView.Adapter{
             //14:36 https://www.youtube.com/watch?v=Vyqz_-sJGFk
 
             Glide.with(context).load(card.weather_image).into(weatherImage);
+
+        }
+    }
+
+    class assignments_cardViewHolder extends RecyclerView.ViewHolder{
+        RecyclerView assignment_list;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+
+        TextView title;
+
+        public assignments_cardViewHolder(View itemView){
+            super(itemView);
+            title = itemView.findViewById(R.id.first_thing_title);
+            assignment_list = itemView.findViewById(R.id.list_of_events_list);
+            assignment_list.setLayoutManager(layoutManager);
+
+        }
+        public void bindView(int position){
+            assignments_card card = (assignments_card) infoList.get(position);
+            title.setText(card.getTitle());
+//            Log.d("something", "adapter invoked");
+
+
+            massignmentAdapter = new assignmentAdapter(card.getAssignments(), context);
+
+
+            assignment_list.setAdapter(massignmentAdapter);
+
 
         }
     }
