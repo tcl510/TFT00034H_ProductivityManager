@@ -111,6 +111,4 @@ public class assignmentAdapter extends RecyclerView.Adapter {
             }
         }
     }
-
-
 }

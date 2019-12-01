@@ -1,14 +1,14 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-//import androidx.cardview.widget;
-
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,19 +20,20 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.cardAdapter;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
-import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignment_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignments_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 
-//todo setup different pages and link with tabs https://developer.android.com/reference/com/google/android/material/tabs/TabLayout#setupWithViewPager\(ViewPager\) https://material.io/develop/android/components/tab-layout/
+//import androidx.cardview.widget;
 
+//todo setup different pages and link with tabs https://developer.android.com/reference/com/google/android/material/tabs/TabLayout#setupWithViewPager\(ViewPager\) https://material.io/develop/android/components/tab-layout/
+//todo make since u went thru the effort of making it all recycleview, make a setting page where u can modify the homepage! https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf#.u7416aupw
+//todo make the settings page, where u can modify the layout
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecycleView;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 //        assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
 //        assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
 
-        mCardList.add(new weather_card());
+        mCardList.add(new weather_card("Hong kong", "clear", 25));
 
         mCardList.add(new assignments_card(assignments));
 
@@ -101,9 +102,10 @@ public class MainActivity extends AppCompatActivity {
         new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=" + key);
     }
     public void tester(View view){
-        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
-        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + key);
-
+//        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
+//        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + key);
+        Intent i = new Intent(this,AddAssignment.class);
+        startActivity(i);
 
     }
 
