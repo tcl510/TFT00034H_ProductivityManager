@@ -20,11 +20,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.cardAdapter;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignment_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignments_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
@@ -102,11 +104,13 @@ public class MainActivity extends AppCompatActivity {
         new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=" + key);
     }
     public void tester(View view){
-//        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
-//        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + key);
+        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + key);
+        mAdapter.notifyDataSetChanged();
+    }
+    public void addAssignment(View view){
         Intent i = new Intent(this,AddAssignment.class);
         startActivity(i);
-
     }
 
     public void setFact(String weather_state, String tempature, String icon, String location) {
