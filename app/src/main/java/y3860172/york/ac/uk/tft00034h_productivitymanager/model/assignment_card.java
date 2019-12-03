@@ -1,7 +1,6 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.model;
 
 import java.sql.Time;
-import java.util.List;
 
 public class assignment_card implements Card { //todo add button add more functionality
 
@@ -25,4 +24,5 @@ public class assignment_card implements Card { //todo add button add more functi
     public Time getAssigment_due() {
         return assigment_due; //todo parse time
     }
+
 }
