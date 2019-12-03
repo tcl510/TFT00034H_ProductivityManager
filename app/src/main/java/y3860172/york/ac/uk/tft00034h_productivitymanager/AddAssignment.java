@@ -16,6 +16,7 @@ public class AddAssignment extends AppCompatActivity {
     }
 
     public void onClickToggleDate(View v){
+        TransitionManager.beginDelayedTransition((ViewGroup) v);
         VisExpander(findViewById(R.id.datePicker));
         VisDisable(findViewById(R.id.TimePicker));
     }
@@ -24,7 +25,7 @@ public class AddAssignment extends AppCompatActivity {
         VisDisable(findViewById(R.id.datePicker));
     }
     public void VisExpander(View picker){
-        TransitionManager.beginDelayedTransition((ViewGroup) picker);
+
         if (picker.getVisibility() == View.GONE){
             picker.setVisibility(View.VISIBLE);
         } else {
