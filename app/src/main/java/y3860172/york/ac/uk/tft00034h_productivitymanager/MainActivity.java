@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 //        assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
 //        assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
 
-        mCardList.add(new weather_card("Hong kong", "clear", 25));
+
 
         mCardList.add(new assignments_card(assignments));
 
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 //                icon = first_obj.getString("id");
 
                 location = json.getString("name");
-
+                mCardList.add(0,new weather_card());
                 setFact(weatherMain, tempature, icon, location);
             }
             catch(JSONException e) {

@@ -27,6 +27,7 @@ public class weather_card implements Card  {
         this.temperature_string = null;
         this.weather_image = null;
     }
+    //todo add day night color difference
 
     public String makeTemperatureString(float temperature){
         return String.valueOf(temperature) + "°C";

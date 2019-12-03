@@ -22,16 +22,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
-        android:animateLayoutChanges="true">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:focusable="true"
-            android:focusableInTouchMode="true"
-            >
+            android:focusableInTouchMode="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -85,7 +83,8 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:animateLayoutChanges="true">
 
                                 <TextView
                                     android:id="@+id/editText"
@@ -147,7 +146,8 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="0.5"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+                                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                                    android:animateLayoutChanges="true"/>
 
                                 <TimePicker
                                     android:id="@+id/TimePicker"

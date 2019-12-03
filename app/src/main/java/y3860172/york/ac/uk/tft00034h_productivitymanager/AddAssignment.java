@@ -1,7 +1,9 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +24,7 @@ public class AddAssignment extends AppCompatActivity {
         VisDisable(findViewById(R.id.datePicker));
     }
     public void VisExpander(View picker){
+        TransitionManager.beginDelayedTransition((ViewGroup) picker);
         if (picker.getVisibility() == View.GONE){
             picker.setVisibility(View.VISIBLE);
         } else {
