@@ -1,5 +1,7 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.model;
 
+import android.graphics.Color;
+
 import java.net.URL;
 
 public class weather_card implements Card  {
@@ -14,6 +16,7 @@ public class weather_card implements Card  {
     public float temperature;
     public String weather_image = "";
     public URL url;
+    public String night_day;
 
     public weather_card(String location, String condition, float temperature) {
         this.location = location;
@@ -27,7 +30,7 @@ public class weather_card implements Card  {
         this.temperature_string = null;
         this.weather_image = null;
     }
-    //todo add day night color difference
+    //DONE add day night color difference
 
     public String makeTemperatureString(float temperature){
         return String.valueOf(temperature) + "°C";
@@ -47,5 +50,13 @@ public class weather_card implements Card  {
 
     public String getWeather_image() {
         return weather_image;
+    }
+
+    public int getDayNight(){
+        if (night_day == "d"){
+            return Color.parseColor("#FFCC80");
+        } else {
+            return Color.parseColor("#9FA8DA");
+        }
     }
 }

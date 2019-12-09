@@ -155,6 +155,7 @@ public class cardAdapter extends RecyclerView.Adapter{
             //14:36 https://www.youtube.com/watch?v=Vyqz_-sJGFk
 
             weatherImage.setText(card.getWeather_image());
+            weatherImage.setTextColor(card.getDayNight());
 
 //            Glide.with(context).load(card.weather_image).into(weatherImage);
 

@@ -10,6 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.imageAdaptor;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Media;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.picture;
+
 public class AddAssignment extends AppCompatActivity {
 
     @Override
@@ -22,10 +29,31 @@ public class AddAssignment extends AppCompatActivity {
 
     public RecyclerView mRecycleView;
 
+    private List<Media> mPhotoList;
+    //todo add voice recording
+    private imageAdaptor mAdaptor;
     public void bindPictures(){
 
         mRecycleView = findViewById(R.id.photo_recycleView);
-        mRecycleView.setLayoutManager(new GridLayoutManager(this,3));
+        mRecycleView.setLayoutManager(new GridLayoutManager(this,4));
+//        mRecycleView.setNestedScrollingEnabled(false);
+        mPhotoList = new ArrayList<>();
+        mPhotoList.add(new picture(R.drawable.tedted));
+        mPhotoList.add(new picture(R.drawable.sunset));
+        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
+        mPhotoList.add(new picture(R.drawable.tedted));
+        mPhotoList.add(new picture(R.drawable.sunset));
+        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
+        mPhotoList.add(new picture(R.drawable.tedted));
+        mPhotoList.add(new picture(R.drawable.sunset));
+        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
+        mPhotoList.add(new picture(R.drawable.tedted));
+        mPhotoList.add(new picture(R.drawable.sunset));
+        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
+        mPhotoList.add(new picture(R.drawable.tedtedparty));
+        //todo add the add new button
+        mAdaptor = new imageAdaptor(mPhotoList, this);
+        mRecycleView.setAdapter(mAdaptor);
 
     }
 
@@ -44,7 +72,6 @@ public class AddAssignment extends AppCompatActivity {
         if (picker.getVisibility() == View.GONE){
             picker.setVisibility(View.VISIBLE);
         } else {
-
             picker.setVisibility(View.GONE);
         }
     }

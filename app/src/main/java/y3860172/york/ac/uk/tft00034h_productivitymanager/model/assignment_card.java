@@ -12,6 +12,7 @@ public class assignment_card implements Card { //todo add button add more functi
     String assignment_title;
     Time assigment_due;
 
+
     public assignment_card(String assignment_title, Time assigment_due) {
         this.assignment_title = assignment_title;
         this.assigment_due = assigment_due;
@@ -24,5 +25,4 @@ public class assignment_card implements Card { //todo add button add more functi
     public Time getAssigment_due() {
         return assigment_due; //todo parse time
     }
-
 }

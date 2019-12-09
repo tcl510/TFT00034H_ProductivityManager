@@ -80,17 +80,9 @@ public class MainActivity extends AppCompatActivity {
         //populate
         mCardList = new ArrayList<>();
         assignments = new ArrayList<>();
-//        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
-//        assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
-//        assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
-
-
-
         mCardList.add(new assignments_card(assignments));
-
         mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
         mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
-
         //set adapter to recycleview
         mAdapter = new cardAdapter(mCardList, this);
         mRecycleView.setAdapter(mAdapter);
@@ -100,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     String key = "7676be54a54f4b58b79d8d3a5cf16936";
+
     public void initialize(){
     //todo add gps https://github.com/rohitsthaa/retrofit-openweather
         new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=" + key);
@@ -114,15 +107,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void setFact(String weather_state, String tempature, String icon, String location) {
+    public void setFact(String weather_state, String tempature, String icon, String location, String night_day) {
 //        Card temp_cardlist = mCardList.get(0);
         weather_card temp = (weather_card)mCardList.get(0);
         //set strings
 
-        temp.condition = weather_state.substring(0,1).toUpperCase() + weather_state.substring(1);
+        temp.condition = weather_state.substring(0,1).toUpperCase() + weather_state.substring(1); //done capitalize first word
         temp.temperature_string = tempature;
+
         //set picture
         temp.weather_image = icon;
+        temp.night_day = night_day;
 
         //set location
         temp.location = location;
@@ -226,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
 
                 location = json.getString("name");
                 mCardList.add(0,new weather_card());
-                setFact(weatherMain, tempature, icon, location);
+                setFact(weatherMain, tempature, icon, location, night_day);
             }
             catch(JSONException e) {
                 weather_state = e.getLocalizedMessage(); //if there is an error in the JSON.
