@@ -2,13 +2,10 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.AutoTransition;
-import androidx.transition.TransitionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +48,11 @@ public class AddAssignment extends AppCompatActivity {
         mPhotoList.add(new picture(R.drawable.sunset));
         mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
         mPhotoList.add(new picture(R.drawable.tedtedparty));
+        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
+        mPhotoList.add(new picture(R.drawable.tedted));
+        mPhotoList.add(new picture(R.drawable.sunset));
+        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
+        mPhotoList.add(new picture(R.drawable.tedtedparty));
         //todo add the add new button
         mAdaptor = new imageAdaptor(mPhotoList, this);
         mRecycleView.setAdapter(mAdaptor);
@@ -61,14 +63,15 @@ public class AddAssignment extends AppCompatActivity {
 //        TransitionManager.beginDelayedTransition((ViewGroup) v.getParent(), new AutoTransition());
         VisExpander(findViewById(R.id.datePicker));
         VisDisable(findViewById(R.id.TimePicker));
+        //todo make selected text darker
     }
     public void onClickToggleTime(View v){
         VisExpander(findViewById(R.id.TimePicker));
         VisDisable(findViewById(R.id.datePicker));
     }
     public void VisExpander(View picker){
-        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent().getParent().getParent(), new AutoTransition());
-        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent(), new AutoTransition());
+//        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent().getParent().getParent(), new AutoTransition());
+//        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent(), new AutoTransition());
         if (picker.getVisibility() == View.GONE){
             picker.setVisibility(View.VISIBLE);
         } else {
@@ -77,8 +80,8 @@ public class AddAssignment extends AppCompatActivity {
     }
     public void VisDisable(View picker){
 //        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent().getParent(), new AutoTransition());
-        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent().getParent().getParent(), new AutoTransition());
-        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent(), new AutoTransition());
+//        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent().getParent().getParent(), new AutoTransition());
+//        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent(), new AutoTransition());
 
         picker.setVisibility(View.GONE);
     }
