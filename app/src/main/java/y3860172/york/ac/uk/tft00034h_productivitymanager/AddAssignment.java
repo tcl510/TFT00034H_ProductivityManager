@@ -1,13 +1,19 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.imageAdaptor;
@@ -16,10 +22,42 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.model.picture;
 
 public class AddAssignment extends AppCompatActivity {
 
+    Date dueDate = new Date();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assignment);
+
+        DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
+        final Calendar calendar = Calendar.getInstance();
+        datePicker.init(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                new DatePicker.OnDateChangedListener() {
+                    @Override
+                    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Log.d("time was set", "something happened");
+                        dueDate.setYear(year);
+                        dueDate.setMonth(monthOfYear);
+                        dueDate.setDate(dayOfMonth);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM");
+                        TextView dateText = findViewById(R.id.date_display);
+                        dateText.setText(simpleDateFormat.format(dueDate));
+
+                    }
+                }
+        );
+        datePicker.updateDate(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM");
+        TextView dateText = findViewById(R.id.date_display);
+        dateText.setText(simpleDateFormat.format(dueDate));
+        //todo clean this shit up please
+        //todo bind timer as well
+
 
         bindPictures();
     }
@@ -65,6 +103,14 @@ public class AddAssignment extends AppCompatActivity {
         VisDisable(findViewById(R.id.TimePicker));
         //todo make selected text darker
     }
+
+
+
+
+
+
+
+
     public void onClickToggleTime(View v){
         VisExpander(findViewById(R.id.TimePicker));
         VisDisable(findViewById(R.id.datePicker));

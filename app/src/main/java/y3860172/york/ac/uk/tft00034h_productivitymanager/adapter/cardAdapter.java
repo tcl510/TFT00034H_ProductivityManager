@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +20,10 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignments_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.time_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
+
+//import com.bumptech.glide.Glide;
 
 //todo yo wtf https://medium.com/aubergine-solutions/creating-recyclerview-layout-in-android-no-pain-only-gain-404280471003
 
@@ -50,6 +51,9 @@ public class cardAdapter extends RecyclerView.Adapter{
             case Card.CARD_ASSIGNMENTS:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_of,parent,false);
                 return new assignments_cardViewHolder(itemView);
+            case Card.CARD_TIME:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.time_card,parent,false);
+                return new time_cardViewHolder(itemView);
             default:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_of,parent,false);
                 return new tester_cardViewHolder(itemView);
@@ -68,6 +72,10 @@ public class cardAdapter extends RecyclerView.Adapter{
                 break;
             case Card.CARD_ASSIGNMENTS:
                 ((assignments_cardViewHolder) holder).bindView(position);
+                break;
+            case Card.CARD_TIME:
+                ((time_cardViewHolder) holder).bindView(position);
+                break;
             default:
                 ((assignments_cardViewHolder) holder).bindView(position);
                 break;
@@ -187,6 +195,21 @@ public class cardAdapter extends RecyclerView.Adapter{
             assignment_list.setAdapter(massignmentAdapter);
 
 
+        }
+    }
+    class time_cardViewHolder extends RecyclerView.ViewHolder{
+        TextView time;
+        TextView date;
+        public time_cardViewHolder(View itemView){
+            super(itemView);
+            time = itemView.findViewById(R.id.time);
+            date = itemView.findViewById(R.id.date);
+
+        }
+        public void bindView(int position){
+            time_card card = (time_card) infoList.get(position);
+            time.setText(card.getTimeString());
+            date.setText(card.getFullLowerString());
         }
     }
 }

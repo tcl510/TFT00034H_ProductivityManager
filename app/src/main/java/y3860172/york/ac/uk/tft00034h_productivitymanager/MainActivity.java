@@ -3,6 +3,7 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -29,6 +30,7 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignment_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignments_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.time_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 
 //import androidx.cardview.widget;
@@ -48,14 +50,16 @@ public class MainActivity extends AppCompatActivity {
     public String weather_current;
 
 
-
+    public Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        handler = new Handler();
+
         initialize();
         card();
-        weather();
 
     }
     @Override
@@ -70,6 +74,26 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
     }
+    //todo if u have time, make the runnable run from the adaptor or from the class itself
+    public Runnable runnable = new Runnable() {
+
+        public void run() {
+            boolean update = false;
+            for (Card card : mCardList) {
+                if (card.getType() == Card.CARD_TIME) {
+                    time_card temp = (time_card) card;
+                    temp.timeString = temp.getTimeString();
+                    temp.fullLowerString = temp.getFullLowerString();
+                    mAdapter.notifyItemChanged(mCardList.indexOf(card), ((time_card) card).timeString);
+                    mAdapter.notifyItemChanged(mCardList.indexOf(card), ((time_card) card).fullLowerString);
+                }
+            }
+            if (update) {
+
+            }
+            handler.postDelayed(this, 500);
+        }
+    };
 
 
     public void card(){
@@ -80,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         //populate
         mCardList = new ArrayList<>();
         assignments = new ArrayList<>();
+        mCardList.add(new time_card());
         mCardList.add(new assignments_card(assignments));
         mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
         mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
@@ -87,46 +112,29 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new cardAdapter(mCardList, this);
         mRecycleView.setAdapter(mAdapter);
     }
-    public void weather(){
-
-    }
-
-    String key = "7676be54a54f4b58b79d8d3a5cf16936";
-
     public void initialize(){
-    //todo add gps https://github.com/rohitsthaa/retrofit-openweather
-        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=" + key);
+        //todo add gps https://github.com/rohitsthaa/retrofit-openweather
+        weather();
+        handler.postDelayed(runnable, 500);
     }
+
     public void tester(View view){
         assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
-        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + key);
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + weatherKey);
         mAdapter.notifyDataSetChanged();
     }
+
+    //assignment button
     public void addAssignment(View view){
         Intent i = new Intent(this,AddAssignment.class);
         startActivity(i);
     }
 
-    public void setFact(String weather_state, String tempature, String icon, String location, String night_day) {
-//        Card temp_cardlist = mCardList.get(0);
-        weather_card temp = (weather_card)mCardList.get(0);
-        //set strings
-
-        temp.condition = weather_state.substring(0,1).toUpperCase() + weather_state.substring(1); //done capitalize first word
-        temp.temperature_string = tempature;
-
-        //set picture
-        temp.weather_image = icon;
-        temp.night_day = night_day;
-
-        //set location
-        temp.location = location;
-
-        final Card set = mCardList.set(0, temp);
-        weather_current = weather_state;
-        mAdapter.notifyDataSetChanged();
+    //getting weather thru api
+    String weatherKey = "7676be54a54f4b58b79d8d3a5cf16936";
+    public void weather(){
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=" + weatherKey);
     }
-
     private class GetWeather extends AsyncTask<String, Void, String> {
         //based after https://github.com/UoY-TFTV-InteractiveMedia/MobileInteraction/blob/master/Practical4/app/src/main/java/uk/ac/york/tftv/im/mi/practical4/CatShow.java#L58
 
@@ -180,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if(result.length()==0) {//remember we returned an empty string if there was an error. In that case lets return an error message.
-//                setFact("Error!");
+//                setWeather("Error!");
                 return;
             }
 
@@ -220,8 +228,10 @@ public class MainActivity extends AppCompatActivity {
 //                icon = first_obj.getString("id");
 
                 location = json.getString("name");
+
+
                 mCardList.add(0,new weather_card());
-                setFact(weatherMain, tempature, icon, location, night_day);
+                setWeather(weatherMain, tempature, icon, location, night_day);
             }
             catch(JSONException e) {
                 weather_state = e.getLocalizedMessage(); //if there is an error in the JSON.
@@ -229,15 +239,37 @@ public class MainActivity extends AppCompatActivity {
             }
              //once the data has been collected, set the cat fact on the screen
         }
+
+        public String makeWeatherString(float tempature_value){
+            return Math.round(tempature_value) + "°c";
+        }
+        public float convert(float temp){
+            return temp - 273;
+        }
+        public void setWeather(String weather_state, String tempature, String icon, String location, String night_day) {
+//        Card temp_cardlist = mCardList.get(0);
+            int index = 0;
+            weather_card temp = (weather_card)mCardList.get(index);
+            //set strings
+
+            temp.condition = weather_state.substring(0,1).toUpperCase() + weather_state.substring(1); //done capitalize first word
+            temp.temperature_string = tempature;
+
+            //set picture
+            temp.weather_image = icon;
+            temp.night_day = night_day;
+
+            //set location
+            temp.location = location;
+
+            final Card set = mCardList.set(index, temp);
+            weather_current = weather_state;
+            mAdapter.notifyItemChanged(index);
+        }
     }
 
+    //getting time
 
-    public String makeWeatherString(float tempature_value){
-        return Math.round(tempature_value) + "°c";
-    }
-    public float convert(float temp){
-        return temp - 273;
-    }
 }
 
 
