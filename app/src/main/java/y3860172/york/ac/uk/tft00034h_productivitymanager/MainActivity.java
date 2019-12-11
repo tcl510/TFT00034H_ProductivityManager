@@ -35,7 +35,7 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 
 //import androidx.cardview.widget;
 
-//todo setup different pages and link with tabs https://developer.android.com/reference/com/google/android/material/tabs/TabLayout#setupWithViewPager\(ViewPager\) https://material.io/develop/android/components/tab-layout/
+//todo (might scrap) setup different pages and link with tabs https://developer.android.com/reference/com/google/android/material/tabs/TabLayout#setupWithViewPager\(ViewPager\) https://material.io/develop/android/components/tab-layout/
 //todo make since u went thru the effort of making it all recycleview, make a setting page where u can modify the homepage! https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf#.u7416aupw
 //todo make the settings page, where u can modify the layout
 //todo add the calender functionality

@@ -1,5 +1,6 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -105,7 +106,12 @@ public class AddAssignment extends AppCompatActivity {
     }
 
 
-
+    //assignment button
+    public void back(View view){
+        Intent i = new Intent(this,MainActivity.class);
+        startActivity(i);
+    }
+    //todo make this shit look presentable
 
 
 
