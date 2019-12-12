@@ -1,6 +1,7 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,10 @@ public class imageAdaptor extends RecyclerView.Adapter {
             case Media.MEDIA_PICTURE:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.picture,parent,false);
                 return new pictureViewHolder (itemView);
+            case Media.MEDIA_ADD:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_picture, parent, false);
+                Log.d("camera", "camera binded");
+                return new add_pictureViewHolder(itemView);
             default:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.picture,parent,false);
                 return new pictureViewHolder (itemView);
@@ -45,6 +50,9 @@ public class imageAdaptor extends RecyclerView.Adapter {
         switch (getItemViewType(position)){
             case Media.MEDIA_PICTURE:
                 ((pictureViewHolder) holder).bindView(position);
+                break;
+            case Media.MEDIA_ADD:
+                ((add_pictureViewHolder) holder).bindView(position);
                 break;
             default:
                 ((pictureViewHolder) holder).bindView(position);
@@ -81,8 +89,19 @@ public class imageAdaptor extends RecyclerView.Adapter {
             //bind data to views
             //textView.setText()..
             imgMedia.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imgMedia.setImageResource(picture.getImage());
+            imgMedia.setImageBitmap(picture.getImage());
 
+
+        }
+    }
+    class add_pictureViewHolder extends RecyclerView.ViewHolder {
+
+
+        public add_pictureViewHolder(View itemView){
+            super(itemView);
+
+        }
+        public void bindView(int position){
 
         }
     }

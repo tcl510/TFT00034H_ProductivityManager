@@ -1,10 +1,14 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +23,7 @@ import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.imageAdaptor;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Media;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.add_picture;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.picture;
 
 public class AddAssignment extends AppCompatActivity {
@@ -74,24 +79,9 @@ public class AddAssignment extends AppCompatActivity {
         mRecycleView.setLayoutManager(new GridLayoutManager(this,4));
 //        mRecycleView.setNestedScrollingEnabled(false);
         mPhotoList = new ArrayList<>();
-        mPhotoList.add(new picture(R.drawable.tedted));
-        mPhotoList.add(new picture(R.drawable.sunset));
-        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
-        mPhotoList.add(new picture(R.drawable.tedted));
-        mPhotoList.add(new picture(R.drawable.sunset));
-        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
-        mPhotoList.add(new picture(R.drawable.tedted));
-        mPhotoList.add(new picture(R.drawable.sunset));
-        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
-        mPhotoList.add(new picture(R.drawable.tedted));
-        mPhotoList.add(new picture(R.drawable.sunset));
-        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
-        mPhotoList.add(new picture(R.drawable.tedtedparty));
-        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
-        mPhotoList.add(new picture(R.drawable.tedted));
-        mPhotoList.add(new picture(R.drawable.sunset));
-        mPhotoList.add(new picture(R.drawable.common_google_signin_btn_text_disabled));
-        mPhotoList.add(new picture(R.drawable.tedtedparty));
+//        mPhotoList.add(new picture(BitmapConverter(R.drawable.tedtedparty)));
+//        mPhotoList.add(new picture(BitmapConverter(R.drawable.sunset)));
+        mPhotoList.add(new add_picture());
         //todo add the add new button
         mAdaptor = new imageAdaptor(mPhotoList, this);
         mRecycleView.setAdapter(mAdaptor);
@@ -113,6 +103,31 @@ public class AddAssignment extends AppCompatActivity {
     }
     //todo make this shit look presentable
 
+
+    private static final int CAMERA_REQUEST = 1888;
+    private ImageView imageView;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
+
+    public void camera (View view){
+
+            Log.d("camera", "activated");
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            super.onActivityResult(requestCode, resultCode, data);
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            mPhotoList.add(0, new picture(photo));
+            mAdaptor.notifyItemInserted(0);
+
+            Log.d("camera", "picture binded");
+        }
+
+
+    }
 
 
 
@@ -148,7 +163,9 @@ public class AddAssignment extends AppCompatActivity {
     //todo add voice memo recycleview
     //todo make data saving in each assignment
 
-
-
-
+    public Bitmap BitmapConverter (int image){
+        Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                image);
+        return icon;
+    }
 }

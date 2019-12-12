@@ -2,10 +2,12 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,17 +56,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT < 16) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+        fullscreen();
         setContentView(R.layout.activity_main);
-
+        //start handler
         handler = new Handler();
-
         initialize();
         card();
-
     }
+
     @Override
     protected void onStart() {
         super.onStart();
+    }
+//    @Override
+//    protected void onFocus(){
+//
+//    }
+    public void fullscreen(){
+        View decorView = getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
 
     }
 
@@ -230,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                 location = json.getString("name");
 
 
-                mCardList.add(0,new weather_card());
+                mCardList.add(1,new weather_card());
                 setWeather(weatherMain, tempature, icon, location, night_day);
             }
             catch(JSONException e) {
@@ -248,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
         }
         public void setWeather(String weather_state, String tempature, String icon, String location, String night_day) {
 //        Card temp_cardlist = mCardList.get(0);
-            int index = 0;
+            int index = 1;
             weather_card temp = (weather_card)mCardList.get(index);
             //set strings
 
@@ -265,10 +282,13 @@ public class MainActivity extends AppCompatActivity {
             final Card set = mCardList.set(index, temp);
             weather_current = weather_state;
             mAdapter.notifyItemChanged(index);
+
         }
     }
 
     //getting time
+
+
 
 }
 

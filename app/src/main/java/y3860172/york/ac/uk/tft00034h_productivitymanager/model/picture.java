@@ -1,16 +1,18 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.model;
 
+import android.graphics.Bitmap;
+
 public class picture implements Media {
 
-    int image;
+    Bitmap image;
 
 
 
-    public picture(int image){
+    public picture(Bitmap image){
         this.image = image;
     }
 
-    public int getImage() {
+    public Bitmap getImage() {
         return image;
     }
 

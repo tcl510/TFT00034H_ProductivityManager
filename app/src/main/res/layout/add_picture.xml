@@ -5,24 +5,23 @@
     android:id="@+id/ConstraintLayout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:adjustViewBounds="true"
+        android:clickable="true"
         android:cropToPadding="true"
-        android:scaleType="fitCenter"
+        android:onClick="camera"
+        android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tedted"
-        tools:srcCompat="@drawable/tedted" />
+        app:srcCompat="@drawable/ic_add_a_photo_24px"
+        tools:srcCompat="@drawable/ic_add_a_photo_24px" />
     <!--TODO https://stackoverflow.com/questions/33575731/gridlayoutmanager-how-to-auto-fit-columns-->
 </androidx.constraintlayout.widget.ConstraintLayout>
