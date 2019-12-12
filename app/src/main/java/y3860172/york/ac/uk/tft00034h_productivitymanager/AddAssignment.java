@@ -25,10 +25,13 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.imageAdaptor;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Media;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.add_picture;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.picture;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.types.Assignment;
 
 public class AddAssignment extends AppCompatActivity {
 
     Date dueDate = new Date();
+    String title;
+    String notes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +99,7 @@ public class AddAssignment extends AppCompatActivity {
     }
 
 
-    //assignment button
+    //Assignment button
     public void back(View view){
         Intent i = new Intent(this,MainActivity.class);
         startActivity(i);
@@ -161,11 +164,25 @@ public class AddAssignment extends AppCompatActivity {
     //todo add picture view when clicked
     //todo add delete function for picture recycleview
     //todo add voice memo recycleview
-    //todo make data saving in each assignment
+    //todo make data saving in each Assignment
 
     public Bitmap BitmapConverter (int image){
         Bitmap icon = BitmapFactory.decodeResource(getResources(),
                 image);
         return icon;
+    }
+    public void save(View view){
+        List<Bitmap> photolist;
+        photolist = new ArrayList<>();
+        for (Media photo: mPhotoList){
+            if (photo.getType() == Media.MEDIA_PICTURE){
+                picture temp = (picture) photo;
+                photolist.add(temp.getImage());
+            }
+        }
+        Assignment assignment = new Assignment(photolist, title, dueDate, notes);
+        Intent i = new Intent(this,MainActivity.class);
+        i.putExtra("assignment", assignment);
+        startActivity(i);
     }
 }

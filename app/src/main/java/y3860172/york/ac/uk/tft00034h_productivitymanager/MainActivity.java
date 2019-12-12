@@ -34,6 +34,7 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignments_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.time_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.types.Assignment;
 
 //import androidx.cardview.widget;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecycleView;
     private cardAdapter mAdapter;
     private List<Card> mCardList;
-    private List<Card> assignments;
+    public List<Card> assignments;
 
 
     public String weather_current;
@@ -89,8 +90,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
 //        mAdapter.notifyDataSetChanged();
         super.onResume();
+        Intent i = getIntent();
 
+        Assignment newAssignment = (Assignment)i.getSerializableExtra("assignment");
+        if (newAssignment != null){
+            assignments.add(new assignment_card(newAssignment));
+        }
     }
+
+
     //todo if u have time, make the runnable run from the adaptor or from the class itself
     public Runnable runnable = new Runnable() {
 
@@ -130,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         mRecycleView.setAdapter(mAdapter);
     }
     public void initialize(){
-        //todo add gps https://github.com/rohitsthaa/retrofit-openweather
+        /*todo add gps https://github.com/rohitsthaa/retrofit-openweather   https://stackoverflow.com/questions/2227292/how-to-get-latitude-and-longitude-of-the-mobile-device-in-android */
         weather();
         handler.postDelayed(runnable, 500);
     }
@@ -141,24 +149,23 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    //assignment button
+    //Assignment button
     public void addAssignment(View view){
         Intent i = new Intent(this,AddAssignment.class);
         startActivity(i);
     }
+
+
 
     //getting weather thru api
     String weatherKey = "7676be54a54f4b58b79d8d3a5cf16936";
     public void weather(){
         new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=" + weatherKey);
     }
+
     private class GetWeather extends AsyncTask<String, Void, String> {
         //based after https://github.com/UoY-TFTV-InteractiveMedia/MobileInteraction/blob/master/Practical4/app/src/main/java/uk/ac/york/tftv/im/mi/practical4/CatShow.java#L58
 
-        /**
-         * When we call "execute" in getCat(), this is the method that is called. Note that "String..." means it can accept a list of strings.
-         * We need to do it this way, because this is how AsyncTask is wired.
-         */
         @Override
         protected String doInBackground(String... urls) {
             URL url;
@@ -171,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
                 //here we would show some kind of error, but let's just exit and return a blank string:
                 Log.d("something", e.toString());
                 return "something";
-
             }
 
             StringBuilder sb = new StringBuilder();  //Stringbuilder is a helper class to build strings from remote sources (remember, we don't get all the data at once).
@@ -282,18 +288,8 @@ public class MainActivity extends AppCompatActivity {
             final Card set = mCardList.set(index, temp);
             weather_current = weather_state;
             mAdapter.notifyItemChanged(index);
-
         }
     }
-
-    //getting time
-
-
-
 }
-
-
-
-//    Card tester = new Card ("Default Title", "Default Subtitle goes here, more words, words and more words", "a subtitle to behold!", "tedted.jpg", "tedted.jpg");
-
+//TODO SAVE THE INTENT https://stackoverflow.com/questions/34736166/android-how-to-save-data-intents-data
 
