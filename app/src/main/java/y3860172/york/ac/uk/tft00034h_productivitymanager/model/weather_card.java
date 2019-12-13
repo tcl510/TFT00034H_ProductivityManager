@@ -53,7 +53,7 @@ public class weather_card implements Card  {
     }
 
     public int getDayNight(){
-        if (night_day == "d"){
+        if (night_day.contains("d")){
             return Color.parseColor("#FFCC80");
         } else {
             return Color.parseColor("#9FA8DA");

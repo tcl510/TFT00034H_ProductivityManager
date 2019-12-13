@@ -21,6 +21,7 @@ public class Assignment implements Parcelable {
     }
 
 
+
     //get and set
     public List<Bitmap> getPhotos() {
         return photos;

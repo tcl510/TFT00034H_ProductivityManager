@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -13,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,18 +34,58 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.types.Assignment;
 
 public class AddAssignment extends AppCompatActivity {
 
-    Date dueDate = new Date();
-    String title;
-    String notes;
+    public Date dueDate = new Date();
+    public String title;
+    public String notes;
+    public RecyclerView mRecycleView;
+    private List<Media> mPhotoList;
+    //todo add voice recording
+    private imageAdaptor mAdaptor;
+    private int index;
 
+    EditText title_input;
+    EditText notes_input;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assignment);
 
-        DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(myToolbar);
+        ActionBar ab = getSupportActionBar();
+
+        ab.setDisplayHomeAsUpEnabled(true);
+
+
+
+
+        mPhotoList = new ArrayList<>();
+
+
+        if (getIntent().hasExtra("assignment")) {
+            //set parcel items to everything
+            Bundle data = getIntent().getExtras();
+            Assignment assignment = (Assignment) data.getParcelable("assignment");
+            title = assignment.getTitle();
+            notes = assignment.getNotes();
+            dueDate = assignment.getDueDate();
+            List<Bitmap> bitmapList = assignment.getPhotos();
+            for (Bitmap photo : bitmapList) {
+                mPhotoList.add(new picture(photo));
+            }
+            //set index get index
+            index = data.getInt("index");
+        }
+
+
+
+        //change to calender is duedate
         final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dueDate);
+
+
+        DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
         datePicker.init(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),new DatePicker.OnDateChangedListener() {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -52,12 +95,11 @@ public class AddAssignment extends AppCompatActivity {
                         dueDate.setDate(dayOfMonth);
                         updateDate();
                     }
-
                 }
         );
+
         datePicker.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
         updateDate();
-
         TimePicker timePicker = (TimePicker) findViewById(R.id.TimePicker);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
@@ -69,42 +111,50 @@ public class AddAssignment extends AppCompatActivity {
         });
 
 
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM");
-//        TextView dateText = findViewById(R.id.date_display);
-//        dateText.setText(simpleDateFormat.format(dueDate));
-        //todo clean this shit up please
-        //todo bind timer as well
 
-
-        bindPictures();
+        bind();
     }
+    public boolean onOptionsItemSelected(MenuItem item){
+        back2();
+        return true;
+    }
+
+
     private void updateDate(){
         SimpleDateFormat dd_mmm = new SimpleDateFormat("dd MMM");
         TextView dateText = findViewById(R.id.date_display);
         dateText.setText(dd_mmm.format(dueDate));
-        SimpleDateFormat hhss = new SimpleDateFormat("hh:mm aa");
+        SimpleDateFormat hhmm = new SimpleDateFormat("hh:mm aa");
         TextView timeText = findViewById(R.id.time_display);
-        timeText.setText(hhss.format(dueDate));
+        timeText.setText(hhmm.format(dueDate));
     }
-
-    public RecyclerView mRecycleView;
-
-    private List<Media> mPhotoList;
-    //todo add voice recording
-    private imageAdaptor mAdaptor;
-    public void bindPictures(){
-
+    private void bind(){
+        bindNotes();
+        bindPictures();
+        bindTitle();
+    }
+    private void bindNotes(){
+        notes_input = findViewById(R.id.notes_input);
+        notes_input.setText(notes);
+    }
+    private void bindTitle(){
+        title_input = findViewById(R.id.title_input_editText);
+        if (title_input.getText().toString().matches(getResources().getString(R.string.untitled))) {
+            title_input.setText("");
+        } else {
+            title_input.setText(title);
+        }
+    }
+    private void bindPictures(){
         mRecycleView = findViewById(R.id.photo_recycleView);
         mRecycleView.setLayoutManager(new GridLayoutManager(this,4));
-//        mRecycleView.setNestedScrollingEnabled(false);
-        mPhotoList = new ArrayList<>();
-//        mPhotoList.add(new picture(BitmapConverter(R.drawable.tedtedparty)));
-//        mPhotoList.add(new picture(BitmapConverter(R.drawable.sunset)));
+        //done check if null
+
         mPhotoList.add(new add_picture());
-        //todo add the add new button
+
+        //done add the add new button
         mAdaptor = new imageAdaptor(mPhotoList, this);
         mRecycleView.setAdapter(mAdaptor);
-
     }
 
     public void onClickToggleDate(View v){
@@ -115,13 +165,8 @@ public class AddAssignment extends AppCompatActivity {
     }
 
 
-    //Assignment button
-    public void back(View view){
-        Intent i = new Intent(this,MainActivity.class);
-        setResult(Activity.RESULT_CANCELED, i);
-        finish();
-    }
-    //todo make this shit look presentable
+
+
 
 
     private static final int CAMERA_REQUEST = 1888;
@@ -188,6 +233,29 @@ public class AddAssignment extends AppCompatActivity {
     }
     public void save(View view){
 
+        Intent i = new Intent(this,MainActivity.class);
+        i.putExtra("assignment", payload());
+        i.putExtra("index", index);
+        setResult(Activity.RESULT_OK,i);
+        finish();
+    }
+    //Assignment button
+    public void back(View view){
+        Intent i = new Intent(this,MainActivity.class);
+        i.putExtra("assignment", payload());
+        i.putExtra("index", index);
+        setResult(Activity.RESULT_CANCELED, i);
+        finish();
+    }
+    public void back2(){
+        Intent i = new Intent(this,MainActivity.class);
+        i.putExtra("assignment", payload());
+        i.putExtra("index", index);
+        setResult(Activity.RESULT_CANCELED, i);
+        finish();
+    }
+    public Assignment payload(){
+        //saving photolist
         List<Bitmap> photolist;
         photolist = new ArrayList<>();
         for (Media photo: mPhotoList){
@@ -197,27 +265,16 @@ public class AddAssignment extends AppCompatActivity {
             }
         }
 
-        EditText title_input = findViewById(R.id.title_input_editText);
-
         //get title
         if (title_input.getText().toString().matches("")){
-            title = "No title";
+            title = getResources().getString(R.string.untitled);
         }else {
             title = title_input.getText().toString();
         }
-        //get date
 
+        //get notes
+        notes = notes_input.getText().toString();
 
-        //testing setup
-//        long addTime = TimeUnit.MILLISECONDS.convert(5,TimeUnit.DAYS);
-//        addTime += TimeUnit.MILLISECONDS.convert(3, TimeUnit.HOURS);
-//        dueDate = new Date((new Date().getTime()) + addTime);
-
-        notes = "lorem ipsum";
-        Assignment assignment = new Assignment(photolist, title, dueDate, notes);
-        Intent i = new Intent(this,MainActivity.class);
-        i.putExtra("assignment", assignment);
-        setResult(Activity.RESULT_OK,i);
-        finish();
+        return new Assignment(photolist, title, dueDate, notes);
     }
 }

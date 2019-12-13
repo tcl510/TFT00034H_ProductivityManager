@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
-
     //todo if u have time, make the runnable run from the adaptor or from the class itself
     public Runnable runnable = new Runnable() {
 
@@ -136,9 +135,10 @@ public class MainActivity extends AppCompatActivity {
         //set adapter to recycleview
         mAdapter = new cardAdapter(mCardList, this);
         mRecycleView.setAdapter(mAdapter);
+
     }
     public void initialize(){
-        /*todo add gps https://github.com/rohitsthaa/retrofit-openweather   https://stackoverflow.com/questions/2227292/how-to-get-latitude-and-longitude-of-the-mobile-device-in-android */
+        /*todo add gps https://github.com/rohitsthaa/retrofit-openweather   https://stackoverflow.com/questions/2227292/how-to-get-latitude-and-longitude-of-the-mobile-device-in-android https://github.com/UoY-TFTV-InteractiveMedia/MobileInteraction/blob/master/SensorExamples/Position/app/src/main/java/uk/ac/york/tftv/im/mi/position/MainActivity.java*/
         weather();
         handler.postDelayed(runnable, 500);
     }
@@ -150,11 +150,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Assignment button
-    int ADD_ASSIGNMENT = 69;
+    public int ADD_ASSIGNMENT = 69;
     public void addAssignment(View view){
         Intent i = new Intent(this,AddAssignment.class);
         startActivityForResult(i, ADD_ASSIGNMENT);
     }
+    public int SEE_ASSIGNMENT = 420;
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -170,6 +172,19 @@ public class MainActivity extends AppCompatActivity {
             }
             Log.d("assignment_list", "updated");
         }
+        if (requestCode == SEE_ASSIGNMENT){
+            super.onActivityResult(requestCode, resultCode, data);
+            Assignment assignment = (Assignment) data.getParcelableExtra("assignment");
+            assignments.set(0, new assignment_card(assignment));
+//            assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
+            for (Card card : mCardList) {
+                if (card.getType() == Card.CARD_ASSIGNMENTS) {
+                    mAdapter.notifyItemChanged(mCardList.indexOf(card));
+                }
+            }
+            Log.d("assignment_list", "updated");
+        }
+        //todo sort list
     }
 
 
@@ -255,9 +270,16 @@ public class MainActivity extends AppCompatActivity {
 
 
                 String icon_temp = first_obj.getString("icon");
-                char night_day_char = icon_temp.charAt(2);
+                char night_day_char = 'd';
+                for (char c: icon_temp.toCharArray()){
+                    if (Character.isLetter(c)){
+                        night_day_char = c;
+                        Log.d("something", String.valueOf(c));
+                    };
+                }
                 String night_day = String.valueOf(night_day_char);
-                if (night_day == "d") {
+                Log.d("soemthing2", icon_temp);
+                if (icon_temp.contains("d")) {
                     int resID = getResources().getIdentifier("wi_owm_day_" + first_obj.getString("id"), "string", getPackageName());
                     icon = getString(resID);
                 } else {

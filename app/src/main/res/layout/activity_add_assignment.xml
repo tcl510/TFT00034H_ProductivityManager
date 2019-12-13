@@ -12,17 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:onClick="save"
-            android:text="Button"
-            app:layout_constraintEnd_toEndOf="@+id/toolbar2"
-            app:layout_constraintTop_toTopOf="@+id/toolbar2" />
-
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
@@ -183,6 +172,8 @@
                                     android:clickable="true"
                                     android:focusable="true"
                                     android:hint="@string/Add_title"
+                                    android:inputType="text"
+                                    android:imeOptions="actionDone"
                                     android:textAlignment="viewStart" />
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -238,6 +229,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/media_recycler">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/notes_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Notes"
@@ -249,26 +241,29 @@
 
         </ScrollView>
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/button"
+        <ImageButton
+            android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:onClick="back"
-            android:text="Button"
-            app:layout_constraintStart_toStartOf="@+id/toolbar2"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:onClick="save"
+            android:src="@drawable/ic_add_24px"
+            app:layout_constraintEnd_toEndOf="@+id/toolbar2"
             app:layout_constraintTop_toTopOf="@+id/toolbar2" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

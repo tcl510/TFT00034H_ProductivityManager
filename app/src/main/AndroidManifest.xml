@@ -23,7 +23,9 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
-        <activity android:name=".AddAssignment" />
+        <activity android:name=".AddAssignment"
+            android:parentActivityName=".MainActivity"
+            android:label="Add Assignment"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
