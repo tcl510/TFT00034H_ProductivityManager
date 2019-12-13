@@ -107,7 +107,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
             } else {
                 empty.setVisibility(View.INVISIBLE);
                 title.setText(card.getAssignment_title());
-                due.setText(card.getDaysLeft());//todo translate time into due date
+                due.setText(card.getDaysLeft());//done translate time into due date
             }
         }
     }

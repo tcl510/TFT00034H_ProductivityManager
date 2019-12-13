@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -33,6 +35,7 @@ public class AddAssignment extends AppCompatActivity {
     String title;
     String notes;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,35 +43,48 @@ public class AddAssignment extends AppCompatActivity {
 
         DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
         final Calendar calendar = Calendar.getInstance();
-        datePicker.init(
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH),
-                new DatePicker.OnDateChangedListener() {
+        datePicker.init(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),new DatePicker.OnDateChangedListener() {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         Log.d("time was set", "something happened");
-                        dueDate.setYear(year);
+                        dueDate.setYear(year-1900);
                         dueDate.setMonth(monthOfYear);
                         dueDate.setDate(dayOfMonth);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM");
-                        TextView dateText = findViewById(R.id.date_display);
-                        dateText.setText(simpleDateFormat.format(dueDate));
-
+                        updateDate();
                     }
+
                 }
         );
-        datePicker.updateDate(calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM");
-        TextView dateText = findViewById(R.id.date_display);
-        dateText.setText(simpleDateFormat.format(dueDate));
+        datePicker.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+        updateDate();
+
+        TimePicker timePicker = (TimePicker) findViewById(R.id.TimePicker);
+        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                dueDate.setHours(hourOfDay);
+                dueDate.setMinutes(minute);
+                updateDate();
+            }
+        });
+
+
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM");
+//        TextView dateText = findViewById(R.id.date_display);
+//        dateText.setText(simpleDateFormat.format(dueDate));
         //todo clean this shit up please
         //todo bind timer as well
 
 
         bindPictures();
+    }
+    private void updateDate(){
+        SimpleDateFormat dd_mmm = new SimpleDateFormat("dd MMM");
+        TextView dateText = findViewById(R.id.date_display);
+        dateText.setText(dd_mmm.format(dueDate));
+        SimpleDateFormat hhss = new SimpleDateFormat("hh:mm aa");
+        TextView timeText = findViewById(R.id.time_display);
+        timeText.setText(hhss.format(dueDate));
     }
 
     public RecyclerView mRecycleView;
@@ -102,7 +118,8 @@ public class AddAssignment extends AppCompatActivity {
     //Assignment button
     public void back(View view){
         Intent i = new Intent(this,MainActivity.class);
-        startActivity(i);
+        setResult(Activity.RESULT_CANCELED, i);
+        finish();
     }
     //todo make this shit look presentable
 
@@ -128,8 +145,6 @@ public class AddAssignment extends AppCompatActivity {
 
             Log.d("camera", "picture binded");
         }
-
-
     }
 
 
@@ -172,6 +187,7 @@ public class AddAssignment extends AppCompatActivity {
         return icon;
     }
     public void save(View view){
+
         List<Bitmap> photolist;
         photolist = new ArrayList<>();
         for (Media photo: mPhotoList){
@@ -180,9 +196,28 @@ public class AddAssignment extends AppCompatActivity {
                 photolist.add(temp.getImage());
             }
         }
+
+        EditText title_input = findViewById(R.id.title_input_editText);
+
+        //get title
+        if (title_input.getText().toString().matches("")){
+            title = "No title";
+        }else {
+            title = title_input.getText().toString();
+        }
+        //get date
+
+
+        //testing setup
+//        long addTime = TimeUnit.MILLISECONDS.convert(5,TimeUnit.DAYS);
+//        addTime += TimeUnit.MILLISECONDS.convert(3, TimeUnit.HOURS);
+//        dueDate = new Date((new Date().getTime()) + addTime);
+
+        notes = "lorem ipsum";
         Assignment assignment = new Assignment(photolist, title, dueDate, notes);
         Intent i = new Intent(this,MainActivity.class);
         i.putExtra("assignment", assignment);
-        startActivity(i);
+        setResult(Activity.RESULT_OK,i);
+        finish();
     }
 }

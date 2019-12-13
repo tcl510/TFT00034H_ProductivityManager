@@ -1,5 +1,6 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -46,10 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecycleView;
     private cardAdapter mAdapter;
+
     private List<Card> mCardList;
     public List<Card> assignments;
-
-
     public String weather_current;
 
 
@@ -90,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
 //        mAdapter.notifyDataSetChanged();
         super.onResume();
-        Intent i = getIntent();
-
-        Assignment newAssignment = (Assignment)i.getSerializableExtra("assignment");
-        if (newAssignment != null){
-            assignments.add(new assignment_card(newAssignment));
-        }
+//        Intent i = getIntent();
+//
+//        List<Card> newAssignment = (List<Card>)i.getSerializableExtra("assignments");
+//        if (newAssignment != null){
+//            assignments = newAssignment;
+//        }
     }
 
 
@@ -150,9 +150,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Assignment button
+    int ADD_ASSIGNMENT = 69;
     public void addAssignment(View view){
         Intent i = new Intent(this,AddAssignment.class);
-        startActivity(i);
+        startActivityForResult(i, ADD_ASSIGNMENT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_ASSIGNMENT && resultCode == Activity.RESULT_OK) {
+            super.onActivityResult(requestCode, resultCode, data);
+            Assignment assignment = (Assignment) data.getParcelableExtra("assignment");
+            assignments.add(0, new assignment_card(assignment));
+//            assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
+            for (Card card : mCardList) {
+                if (card.getType() == Card.CARD_ASSIGNMENTS) {
+                    mAdapter.notifyItemChanged(mCardList.indexOf(card));
+                }
+            }
+            Log.d("assignment_list", "updated");
+        }
     }
 
 

@@ -1,6 +1,8 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.model;
 
 
+import android.util.Log;
+
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -15,12 +17,21 @@ public class assignment_card implements Card { //todo add button add more functi
 
     String assignment_title;
     Date assigment_due;
-    String daysLeft;
+    int daysLeft;
+    public String daysLeftString(int days){
+        if (days == 1){
+            return days + " day";
+        } else {
+            return days + " days";
+        }
+    }
 
 
     public assignment_card(Assignment assignment) {
+        Log.d("assignment", assignment.toString());
         this.assignment_title = assignment.getTitle();
         this.assigment_due = assignment.getDueDate();
+        this.daysLeft = getHowManyDays(assignment.getDueDate());
     }
 
     public assignment_card(String assignment_title, Date assigment_due) {
@@ -37,9 +48,15 @@ public class assignment_card implements Card { //todo add button add more functi
 
     }
     public String getDaysLeft(){
-        Date today = new Date();
-        long timeDiff = today.getTime() - assigment_due.getTime();
-        float timeDiffConverted = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
-        return String.valueOf(timeDiffConverted);
+
+
+        //todo maybe make this countdown?
+        return daysLeftString(daysLeft);
     }
+    public int getHowManyDays(Date dueDate){
+        Date today = new Date();
+        long timeDiff = assigment_due.getTime() - today.getTime();
+        return (int)TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
+    }
+
 }
