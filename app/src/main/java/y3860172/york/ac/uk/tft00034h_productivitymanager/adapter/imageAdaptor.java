@@ -1,6 +1,11 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.adapter;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +15,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
@@ -78,13 +84,55 @@ public class imageAdaptor extends RecyclerView.Adapter {
     class pictureViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imgMedia;
-        public pictureViewHolder(View itemView){
+
+        private pictureViewHolder(View itemView) {
             super(itemView);
             imgMedia = itemView.findViewById(R.id.thumbnail);
+
+
+            imgMedia.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    Log.d("adaptor", String.valueOf(pos));
+                    picture temp = (picture) PhotoList.get(pos);
+//                    Intent i = new Intent();
+//                    Intent intent = new Intent();
+//                    intent.setAction(Intent.ACTION_VIEW);
+////                    intent.setDataAndType(Uri.parse(temp.getImage_file_path()), "image/*");
+//                    Uri.fromFile(new File(temp.getImage_file_path()));
+//                    intent.setDataAndType(Uri.fromFile(new File(temp.getImage_file_path())),"image/*");
+//                    ((Activity) context).startActivityForResult(i,1);
+                    Log.d("error", temp.getImage_file_path());
+                    File file = new File(Environment.getExternalStorageDirectory(), temp.getImage_file_path());
+//                    Toast.makeText(MainActivity.this, file.getPath(), Toast.LENGTH_LONG).show();
+                    Uri path = Uri.fromFile(file);
+                    if (file.exists()) {
+                        Intent intent = new Intent();
+                        intent.setAction(android.content.Intent.ACTION_VIEW);
+                        intent.setDataAndType(path, "image/*");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        try {
+                            context.startActivity(intent);
+                            Log.d("error", "what");
+                        } catch (ActivityNotFoundException e) {
+                            Log.d("error", "error");
+                        }
+                    }
+                    //todo fix this shit
+
+
+//                    Intent intent = new Intent();
+//                    intent.setAction(android.content.Intent.ACTION_VIEW);
+//                    intent.setType("image/*");
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    ((Activity) context).startActivity(intent);
+                }
+            });
         }
 
 
-        public void bindView(int position) {
+        private void bindView(int position) {
             picture picture = (picture) PhotoList.get(position);
             //bind data to views
             //textView.setText()..

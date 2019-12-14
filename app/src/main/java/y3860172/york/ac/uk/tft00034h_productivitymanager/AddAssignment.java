@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -50,6 +51,9 @@ public class AddAssignment extends AppCompatActivity {
     private imageAdaptor mAdaptor;
     private int index;
     private File photoFile = null;
+    final public int ASSIGNMENT_MODE_NEW = 1;
+    final public int ASSIGNMENT_MODE_EDIT = 0;
+    private int assignmentMode;
 
     EditText title_input;
     EditText notes_input;
@@ -64,13 +68,15 @@ public class AddAssignment extends AppCompatActivity {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                back2();
+                back();
             }
         };
         this.getOnBackPressedDispatcher().addCallback(this, callback);
 
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar2);
+        //get toolbar
+
+        Toolbar myToolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
 
@@ -83,7 +89,7 @@ public class AddAssignment extends AppCompatActivity {
         if (getIntent().hasExtra("assignment")) {
             //set parcel items to everything
             Bundle data = getIntent().getExtras();
-            Assignment assignment = (Assignment) data.getParcelable("assignment");
+            Assignment assignment = data.getParcelable("assignment");
             title = assignment.getTitle();
             notes = assignment.getNotes();
             dueDate = assignment.getDueDate();
@@ -94,7 +100,15 @@ public class AddAssignment extends AppCompatActivity {
             //set index get index
             index = data.getInt("index");
             Log.d("adaptor",String.valueOf(index));
+            assignmentMode = ASSIGNMENT_MODE_EDIT;
+
+        } else {
+            assignmentMode = ASSIGNMENT_MODE_NEW;
         }
+
+        invalidateOptionsMenu();
+
+
 
 
         //change to calender is duedate
@@ -102,7 +116,7 @@ public class AddAssignment extends AppCompatActivity {
         calendar.setTime(dueDate);
 
 
-        DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
+        DatePicker datePicker = findViewById(R.id.datePicker);
         datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -117,7 +131,7 @@ public class AddAssignment extends AppCompatActivity {
 
         datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         updateDate();
-        TimePicker timePicker = (TimePicker) findViewById(R.id.TimePicker);
+        TimePicker timePicker = findViewById(R.id.TimePicker);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
@@ -131,11 +145,52 @@ public class AddAssignment extends AppCompatActivity {
         bind();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        return true;
+    }
     public boolean onOptionsItemSelected(MenuItem item) {
-        back2();
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                save();
+                break;
+            case R.id.home:
+                back();
+                break;
+            case R.id.action_delete:
+                delete();
+                break;
+            default:
+                back();
+                break;
+        }
+//        back2();
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        switch (assignmentMode) {
+            case ASSIGNMENT_MODE_EDIT:
+                menu.findItem(R.id.action_add).setVisible(false);
+                menu.findItem(R.id.action_delete).setVisible(true);
+                break;
+            case ASSIGNMENT_MODE_NEW:
+                menu.findItem(R.id.action_add).setVisible(true);
+                menu.findItem(R.id.action_delete).setVisible(false);
+                break;
+            default:
+                menu.findItem(R.id.action_add).setVisible(false);
+                menu.findItem(R.id.action_delete).setVisible(true);
+                break;
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+    //todo intent setTheme()
 
     private void updateDate() {
         SimpleDateFormat dd_mmm = new SimpleDateFormat("dd MMM");
@@ -288,6 +343,14 @@ public class AddAssignment extends AppCompatActivity {
             setResult(Activity.RESULT_OK, i);
             finish();
         }
+
+    public void save() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("assignment", payload());
+        i.putExtra("index", index);
+        setResult(Activity.RESULT_OK, i);
+        finish();
+    }
         //Assignment button
         public void back (View view){
             Intent i = new Intent(this, MainActivity.class);
@@ -296,13 +359,22 @@ public class AddAssignment extends AppCompatActivity {
             setResult(Activity.RESULT_CANCELED, i);
             finish();
         }
-        public void back2 () {
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("assignment", payload());
-            i.putExtra("index", index);
-            setResult(Activity.RESULT_CANCELED, i);
-            finish();
-        }
+
+    public void back() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("assignment", payload());
+        i.putExtra("index", index);
+        setResult(Activity.RESULT_CANCELED, i);
+        finish();
+    }
+
+    public void delete() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("assignment", payload());
+        i.putExtra("index", index);
+        setResult(2, i);
+        finish();
+    }
         public Assignment payload () {
             //saving photolist
             List<String> photolist;

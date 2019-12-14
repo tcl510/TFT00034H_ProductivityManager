@@ -3,7 +3,6 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,10 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -131,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void card(){
         //binding recycleview
-        mRecycleView = (RecyclerView) findViewById(R.id.idRecycleView);
+        mRecycleView = findViewById(R.id.idRecycleView);
         //fix size
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         //populate
@@ -180,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_ASSIGNMENT && resultCode == Activity.RESULT_OK) {
             super.onActivityResult(requestCode, resultCode, data);
-            Assignment assignment = (Assignment) data.getParcelableExtra("assignment");
+            Assignment assignment = data.getParcelableExtra("assignment");
             assignments.add(0, new assignment_card(assignment));
 //            assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
             for (Card card : mCardList) {
@@ -188,11 +183,11 @@ public class MainActivity extends AppCompatActivity {
                     mAdapter.notifyItemChanged(mCardList.indexOf(card));
                 }
             }
-            Log.d("assignment_list", "updated");
+
         }
         if (requestCode == SEE_ASSIGNMENT){
             super.onActivityResult(requestCode, resultCode, data);
-            Assignment assignment = (Assignment) data.getParcelableExtra("assignment");
+            Assignment assignment = data.getParcelableExtra("assignment");
             int index = data.getIntExtra("index",0);
             assignments.set(index, new assignment_card(assignment));
 //            assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
@@ -201,8 +196,23 @@ public class MainActivity extends AppCompatActivity {
                     mAdapter.notifyItemChanged(mCardList.indexOf(card));
                 }
             }
+
+        }
+        if (resultCode == 2) {
+            super.onActivityResult(requestCode, resultCode, data);
+//            Assignment assignment = (Assignment) data.getParcelableExtra("assignment");
+            int index = data.getIntExtra("index", 0);
+//            assignments.set(index, new assignment_card(assignment));
+            assignments.remove(index);
+//            assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
+            for (Card card : mCardList) {
+                if (card.getType() == Card.CARD_ASSIGNMENTS) {
+                    mAdapter.notifyItemChanged(mCardList.indexOf(card));
+                }
+            }
             Log.d("assignment_list", "updated");
         }
+        saveData();
         //todo sort list
     }
 
@@ -294,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
                     if (Character.isLetter(c)){
                         night_day_char = c;
                         Log.d("something", String.valueOf(c));
-                    };
+                    }
                 }
                 String night_day = String.valueOf(night_day_char);
                 Log.d("soemthing2", icon_temp);
@@ -346,56 +356,6 @@ public class MainActivity extends AppCompatActivity {
             final Card set = mCardList.set(index, temp);
             weather_current = weather_state;
             mAdapter.notifyItemChanged(index);
-        }
-    }
-    public void testSave(){
-
-        try {
-            // Creates a file in the primary external storage space of the
-            // current application.
-            // If the file does not exists, it is created.
-            File testFile = new File(this.getExternalFilesDir(null), "TestFile.txt");
-            if (!testFile.exists())
-                testFile.createNewFile();
-
-            // Adds a line to the file
-            BufferedWriter writer = new BufferedWriter(new FileWriter(testFile, true /*append*/));
-            writer.write("This is a test file.");
-            writer.close();
-            // Refresh the data so it can seen when the device is plugged in a
-            // computer. You may have to unplug and replug the device to see the
-            // latest changes. This is not necessary if the user should not modify
-            // the files.
-            MediaScannerConnection.scanFile(this,
-                    new String[]{testFile.toString()},
-                    null,
-                    null);
-        } catch (IOException e) {
-            Log.e("ReadWriteFile", "Unable to write to the TestFile.txt file.");
-        }
-    }
-    public void testLoad(){
-        String textFromFile = "";
-// Gets the file from the primary external storage space of the
-// current application.
-        File testFile = new File(this.getExternalFilesDir(null), "TestFile.txt");
-        if (testFile != null) {
-            StringBuilder stringBuilder = new StringBuilder();
-            // Reads the data from the file
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new FileReader(testFile));
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    textFromFile += line.toString();
-                    textFromFile += "\n";
-                }
-                reader.close();
-            } catch (Exception e) {
-                Log.e("ReadWriteFile", "Unable to read the TestFile.txt file.");
-            }
-            Log.d("loaded", textFromFile);
         }
     }
 
