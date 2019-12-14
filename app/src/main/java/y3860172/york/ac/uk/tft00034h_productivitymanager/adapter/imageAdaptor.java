@@ -89,7 +89,11 @@ public class imageAdaptor extends RecyclerView.Adapter {
             //bind data to views
             //textView.setText()..
             imgMedia.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imgMedia.setImageBitmap(picture.getImage());
+            if (picture.getImage() == null){
+                imgMedia.setImageBitmap(picture.makeImage());
+            } else {
+                imgMedia.setImageBitmap(picture.getImage());
+            }
 
 
         }

@@ -2,6 +2,7 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,12 +20,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +36,7 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.cardAdapter;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignment_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignments_card;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.time_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.types.Assignment;
@@ -129,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         assignments = new ArrayList<>();
         mCardList.add(new time_card());
         mCardList.add(new assignments_card(assignments));
-//        mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
+        mCardList.add(new tester_card("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
 //        mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
 //        //set adapter to recycleview
         mCardList.add(new assignments_card(assignments));
@@ -144,9 +149,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tester(View view){
-        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
-        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + weatherKey);
-        mAdapter.notifyDataSetChanged();
+//        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
+//        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + weatherKey);
+//        mAdapter.notifyDataSetChanged();
+        testSave();
+        testLoad();
     }
 
     //Assignment button
@@ -327,6 +334,56 @@ public class MainActivity extends AppCompatActivity {
             final Card set = mCardList.set(index, temp);
             weather_current = weather_state;
             mAdapter.notifyItemChanged(index);
+        }
+    }
+    public void testSave(){
+
+        try {
+            // Creates a file in the primary external storage space of the
+            // current application.
+            // If the file does not exists, it is created.
+            File testFile = new File(this.getExternalFilesDir(null), "TestFile.txt");
+            if (!testFile.exists())
+                testFile.createNewFile();
+
+            // Adds a line to the file
+            BufferedWriter writer = new BufferedWriter(new FileWriter(testFile, true /*append*/));
+            writer.write("This is a test file.");
+            writer.close();
+            // Refresh the data so it can seen when the device is plugged in a
+            // computer. You may have to unplug and replug the device to see the
+            // latest changes. This is not necessary if the user should not modify
+            // the files.
+            MediaScannerConnection.scanFile(this,
+                    new String[]{testFile.toString()},
+                    null,
+                    null);
+        } catch (IOException e) {
+            Log.e("ReadWriteFile", "Unable to write to the TestFile.txt file.");
+        }
+    }
+    public void testLoad(){
+        String textFromFile = "";
+// Gets the file from the primary external storage space of the
+// current application.
+        File testFile = new File(this.getExternalFilesDir(null), "TestFile.txt");
+        if (testFile != null) {
+            StringBuilder stringBuilder = new StringBuilder();
+            // Reads the data from the file
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new FileReader(testFile));
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    textFromFile += line.toString();
+                    textFromFile += "\n";
+                }
+                reader.close();
+            } catch (Exception e) {
+                Log.e("ReadWriteFile", "Unable to read the TestFile.txt file.");
+            }
+            Log.d("loaded", textFromFile);
         }
     }
 }
