@@ -3,6 +3,7 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
         ((assignment_cardViewHolder) holder).bindView(position);
     }
 
@@ -90,6 +92,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
         Button button;
         private assignment_cardViewHolder(View itemView){
             super(itemView);
+            //todo impliment the position in get index, basically fix getadapterposition
             //findviewby id
             title = itemView.findViewById(R.id.assignment_title);
             due = itemView.findViewById(R.id.assignment_due);
@@ -100,6 +103,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v){
                     int pos = getAdapterPosition();
+                    Log.d("adaptor", String.valueOf(pos));
                    /* if (pos != RecyclerView.NO_POSITION){
                         Movie clickedDataItem = movieList.get(pos);
                         Intent intent = new Intent(mContext, DetailActivity.class);
@@ -111,6 +115,8 @@ public class assignmentAdapter extends RecyclerView.Adapter {
                     Intent i = new Intent(context, AddAssignment.class);
                     assignment_card card = (assignment_card) TempAssignmentList.get(pos);
                     //todo add index
+                    Bundle extras = new Bundle();
+
                     i.putExtra("index", pos);
                     i.putExtra("assignment", card.getThisAssignment());
                     ((Activity) context).startActivityForResult(i, 420);

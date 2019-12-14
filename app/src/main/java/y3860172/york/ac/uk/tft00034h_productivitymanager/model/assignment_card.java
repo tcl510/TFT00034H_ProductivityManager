@@ -1,7 +1,6 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.model;
 
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class assignment_card implements Card { //todo add button add more functi
         this.assigment_due = assigment_due;
         this.daysLeft = getHowManyDays(assigment_due);
         this.hoursLeft = getHowManyHours(assigment_due);
-        this.thisAssignment = new Assignment(new ArrayList<Bitmap>(), assignment_title, assigment_due, "");
+        this.thisAssignment = new Assignment(new ArrayList<String>(), assignment_title, assigment_due, "");
     }
 
     public String getAssignment_title() {

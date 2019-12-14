@@ -75,12 +75,13 @@ public class AddAssignment extends AppCompatActivity {
             title = assignment.getTitle();
             notes = assignment.getNotes();
             dueDate = assignment.getDueDate();
-            List<Bitmap> bitmapList = assignment.getPhotos();
-            for (Bitmap photo : bitmapList) {
+            List<String> bitmapList = assignment.getPhotos();
+            for (String photo : bitmapList) {
                 mPhotoList.add(new picture(photo));
             }
             //set index get index
             index = data.getInt("index");
+            Log.d("adaptor",String.valueOf(index));
         }
 
 
@@ -157,7 +158,6 @@ public class AddAssignment extends AppCompatActivity {
         mRecycleView = findViewById(R.id.photo_recycleView);
         mRecycleView.setLayoutManager(new GridLayoutManager(this, 4));
         //done check if null
-
         mPhotoList.add(new add_picture());
 
         //done add the add new button
@@ -270,7 +270,6 @@ public class AddAssignment extends AppCompatActivity {
             return icon;
         }
         public void save (View view){
-
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra("assignment", payload());
             i.putExtra("index", index);
@@ -294,15 +293,17 @@ public class AddAssignment extends AppCompatActivity {
         }
         public Assignment payload () {
             //saving photolist
-            List<Bitmap> photolist;
+            List<String> photolist;
             photolist = new ArrayList<>();
             for (Media photo : mPhotoList) {
                 if (photo.getType() == Media.MEDIA_PICTURE) {
                     picture temp = (picture) photo;
                     if (temp.getImage_file_path() == null) {
-                        photolist.add(temp.getImage());
+                        Log.d("storage","error");
+                        photolist.add(temp.getImage_file_path());
                     } else {
-                        photolist.add(temp.makeImage());
+
+                        photolist.add(temp.getImage_file_path());
                     }
                 }
             }

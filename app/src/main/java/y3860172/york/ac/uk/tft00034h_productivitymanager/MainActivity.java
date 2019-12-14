@@ -182,7 +182,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == SEE_ASSIGNMENT){
             super.onActivityResult(requestCode, resultCode, data);
             Assignment assignment = (Assignment) data.getParcelableExtra("assignment");
-            assignments.set(0, new assignment_card(assignment));
+            int index = data.getIntExtra("index",0);
+            assignments.set(index, new assignment_card(assignment));
 //            assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
             for (Card card : mCardList) {
                 if (card.getType() == Card.CARD_ASSIGNMENTS) {

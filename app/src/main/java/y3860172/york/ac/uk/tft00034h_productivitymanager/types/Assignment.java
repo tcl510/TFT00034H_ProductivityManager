@@ -1,19 +1,22 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.types;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Assignment implements Parcelable {
-    public List<Bitmap> photos;
+    public List<String> photos;
     public String title;
     public Date dueDate;
     public String notes;
     //constructor
-    public Assignment(List<Bitmap> photos, String title, Date dueDate, String notes) {
+    public Assignment(List<String> photos, String title, Date dueDate, String notes) {
         this.photos = photos;
         this.title = title;
         this.dueDate = dueDate;
@@ -22,8 +25,30 @@ public class Assignment implements Parcelable {
 
 
     //get and set
-    public List<Bitmap> getPhotos() {
-        return photos;
+    public List<Bitmap> getPhotosBitmaps() {
+        List<Bitmap> photolist = new ArrayList<>();
+        for (String path: photos) {
+            if (path == null){
+                Log.d("storage", "path null");
+            }
+            photolist.add(makeImage(path));
+        }
+        return photolist;
+    }
+    public List<String> getPhotos() {
+        List<String> photolist = new ArrayList<>();
+        for (String path: photos) {
+            if (path == null){
+                Log.d("storage", "path null");
+            }
+            photolist.add(path);
+        }
+        return photolist;
+    }
+
+
+    public Bitmap makeImage(String image_file_path){
+        return BitmapFactory.decodeFile(image_file_path);
     }
 
     public String getTitle() {
@@ -41,7 +66,8 @@ public class Assignment implements Parcelable {
 
     //parcel
     protected Assignment(Parcel in) {
-        photos = in.createTypedArrayList(Bitmap.CREATOR);
+//        photos = in.createTypedArrayList(Bitmap.CREATOR);
+        photos = in.createStringArrayList();
         dueDate = new Date(in.readLong());
         title = in.readString();
         notes = in.readString();
@@ -66,7 +92,8 @@ public class Assignment implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeTypedList(photos);
+//        dest.writeTypedList(photos);
+        dest.writeStringList(photos);
         dest.writeLong(dueDate.getTime());
         dest.writeString(title);
         dest.writeString(notes);

@@ -13,6 +13,7 @@ public class picture implements Media {
     public picture(String image_file){
 //        this.image = image;
         this.image_file_path = image_file;
+        this.image = makeImage(image_file);
     }
     public picture(Bitmap image){
         this.image = image;
@@ -27,6 +28,9 @@ public class picture implements Media {
 
     public Bitmap makeImage(){
         return BitmapFactory.decodeFile(image_file_path);
+    }
+    public Bitmap makeImage(String image_path){
+        return BitmapFactory.decodeFile(image_path);
     }
 
     @Override
