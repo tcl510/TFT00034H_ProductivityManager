@@ -2,6 +2,7 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -15,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +30,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -131,9 +136,11 @@ public class MainActivity extends AppCompatActivity {
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         //populate
         mCardList = new ArrayList<>();
-        assignments = new ArrayList<>();
+
         mCardList.add(new time_card());
         mCardList.add(new assignments_card(assignments));
+//        Log.d("json", String.valueOf(assignments.get(0).getType()));
+        Log.d("json", "asdfasdf");
         mCardList.add(new tester_card("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
 //        mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
 //        //set adapter to recycleview
@@ -146,14 +153,18 @@ public class MainActivity extends AppCompatActivity {
         /*todo add gps https://github.com/rohitsthaa/retrofit-openweather   https://stackoverflow.com/questions/2227292/how-to-get-latitude-and-longitude-of-the-mobile-device-in-android https://github.com/UoY-TFTV-InteractiveMedia/MobileInteraction/blob/master/SensorExamples/Position/app/src/main/java/uk/ac/york/tftv/im/mi/position/MainActivity.java*/
         weather();
         handler.postDelayed(runnable, 500);
+        assignments = new ArrayList<>();
+        loadData();
     }
 
     public void tester(View view){
 //        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
 //        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + weatherKey);
 //        mAdapter.notifyDataSetChanged();
-        testSave();
-        testLoad();
+//        testSave();
+//        testLoad();
+        saveData();
+
     }
 
     //Assignment button
@@ -387,6 +398,28 @@ public class MainActivity extends AppCompatActivity {
             Log.d("loaded", textFromFile);
         }
     }
+
+
+    public void saveData(){
+//        MyObject myObject = new MyObject;
+//set variables of 'myObject', etc.
+        SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(assignments);
+        prefsEditor.putString("assignments", json);
+        prefsEditor.commit();
+    }
+    public void loadData(){
+        SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("assignments", "");
+        Log.d("json", json);
+        Type type = new TypeToken<List<assignment_card>>(){}.getType();
+        List<Card> assignments_load = gson.fromJson(json, type);
+//        assignments = (List<Card>) assignments_load;
+        assignments = assignments_load;
+//        mAdapter.notifyDataSetChanged();
+    }
 }
 //TODO SAVE THE INTENT https://stackoverflow.com/questions/34736166/android-how-to-save-data-intents-data
-

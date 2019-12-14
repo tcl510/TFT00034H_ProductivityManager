@@ -22,6 +22,9 @@ public class Assignment implements Parcelable {
         this.dueDate = dueDate;
         this.notes = notes;
     }
+    public Assignment(){
+
+    }
 
 
     //get and set
