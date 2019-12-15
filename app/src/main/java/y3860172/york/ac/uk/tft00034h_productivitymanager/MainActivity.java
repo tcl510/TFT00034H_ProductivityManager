@@ -157,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         assignments = new ArrayList<>();
         loadData();
     }
-
     private int counter = -1;
     public void getLocation() {
 //        checkPerms(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSION_REQUEST_LOCATION);
@@ -464,6 +463,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     public void saveData(){
 //        MyObject myObject = new MyObject;
 //set variables of 'myObject', etc.
@@ -474,6 +474,7 @@ public class MainActivity extends AppCompatActivity {
         prefsEditor.putString("assignments", json);
         prefsEditor.apply();
     }
+
     public void loadData(){
         SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
         Gson gson = new Gson();
