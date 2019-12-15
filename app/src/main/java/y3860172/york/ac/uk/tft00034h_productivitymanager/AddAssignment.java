@@ -413,7 +413,7 @@ public class AddAssignment extends AppCompatActivity {
                         Log.d("storage","error");
                         photolist.add(temp.getImage_file_path());
                     } else {
-
+                        Log.d("storage", temp.getImage_file_path());
                         photolist.add(temp.getImage_file_path());
                     }
                 }
