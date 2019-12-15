@@ -615,4 +615,9 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="no_assignments">Yay, no assignments</string>
+    <string name="photos">Photos</string>
+    <string name="notes">Notes</string>
+    <string name="time">time</string>
+    <string name="date">date</string>
+    <string name="due_date">Due Date</string>
 </resources>

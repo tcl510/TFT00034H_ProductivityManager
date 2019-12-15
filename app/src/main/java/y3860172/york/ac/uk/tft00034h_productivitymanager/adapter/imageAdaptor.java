@@ -22,8 +22,8 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.model.picture;
 
 public class imageAdaptor extends RecyclerView.Adapter {
 
-    public List<Media> PhotoList;
-    Context context;
+    private List<Media> PhotoList;
+    private Context context;
 
     public imageAdaptor(List<Media> photoList, Context context) {
         PhotoList = photoList;
@@ -125,11 +125,12 @@ public class imageAdaptor extends RecyclerView.Adapter {
     class add_pictureViewHolder extends RecyclerView.ViewHolder {
 
 
-        public add_pictureViewHolder(View itemView){
+        add_pictureViewHolder(View itemView) {
             super(itemView);
 
         }
-        public void bindView(int position){
+
+        void bindView(int position) {
 
         }
     }

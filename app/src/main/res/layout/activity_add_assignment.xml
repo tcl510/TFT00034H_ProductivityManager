@@ -22,8 +22,6 @@
             android:fillViewport="true"
             android:isScrollContainer="true"
             app:layout_constrainedHeight="true"
-
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar2">
 
@@ -72,9 +70,8 @@
                                         android:layout_height="45sp"
                                         android:ems="10"
                                         android:gravity="center"
-                                        android:inputType="date"
                                         android:onClick="onClickToggleDate"
-                                        android:text="date"
+                                        android:text="@string/date"
                                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
 
                                         android:textColor="@android:color/secondary_text_dark"
@@ -89,9 +86,8 @@
                                         android:layout_marginEnd="8dp"
                                         android:ems="10"
                                         android:gravity="center"
-                                        android:inputType="time"
                                         android:onClick="onClickToggleTime"
-                                        android:text="time"
+                                        android:text="@string/time"
                                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                                         android:textColor="@android:color/secondary_text_dark"
 
@@ -105,7 +101,7 @@
                                         android:layout_width="75dp"
                                         android:layout_height="45sp"
                                         android:gravity="center"
-                                        android:text="Due Date"
+                                        android:text="@string/due_date"
 
 
                                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
@@ -188,9 +184,9 @@
                                 android:id="@+id/photo_title"
                                 android:layout_width="match_parent"
                                 android:layout_height="45sp"
-                                android:gravity="center"
-                                android:text="Photos"
-                                android:textAlignment="viewStart"
+                                android:gravity="center|start"
+                                android:text="@string/photos"
+
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                                 android:textSize="18sp"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -201,7 +197,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:clickable="true"
-                                app:layout_constraintTop_toBottomOf="@+id/photo_title" />
+                                app:layout_constraintTop_toBottomOf="@+id/photo_title"
+                                android:focusable="true" />
 
                             <!--<androidx.recyclerview.widget.RecyclerView-->
                                 <!--android:id="@+id/voice_memo_recycleView"-->
@@ -224,7 +221,7 @@
                             android:id="@+id/notes_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Notes"
+                            android:hint="@string/notes"
                             android:selectAllOnFocus="false" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,14 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +19,8 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Card> mCardList;
     public List<Card> assignments;
     public String weather_current;
+    private LocationManager l_mgr;
 
 
     public Handler handler;
@@ -71,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //start handler
         handler = new Handler();
+//        getLocation();
+        checkPerms(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSION_REQUEST_LOCATION);
         initialize();
         card();
     }
@@ -109,9 +120,6 @@ public class MainActivity extends AppCompatActivity {
                     mAdapter.notifyItemChanged(mCardList.indexOf(card), ((time_card) card).fullLowerString);
                 }
             }
-//            if (update) {
-//
-//            }
             handler.postDelayed(this, 500);
         }
     };
@@ -127,11 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
         mCardList.add(new time_card());
         mCardList.add(new assignments_card(assignments));
-//        Log.d("json", String.valueOf(assignments.get(0).getType()));
-        Log.d("json", "asdfasdf");
+
         mCardList.add(new tester_card("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
-//        mCardList.add(new tester_card ("Ted Ted", "Default Subtitle goes here, more words, more words", "Wheeeeeeee", R.drawable.tedted, R.drawable.sunset));
-//        //set adapter to recycleview
         mCardList.add(new assignments_card(assignments));
         mAdapter = new cardAdapter(mCardList, this);
         mRecycleView.setAdapter(mAdapter);
@@ -146,6 +151,43 @@ public class MainActivity extends AppCompatActivity {
         //make a new list of assignments
         assignments = new ArrayList<>();
         loadData();
+    }
+
+    public void getLocation() {
+//        checkPerms(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSION_REQUEST_LOCATION);
+        //todo change names
+        Log.d("location", "called");
+        l_mgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        try {
+            l_mgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    String location_string = "POSITION:\n" + "LAT: " + location.getLatitude() + "\n" + "LNG: " + location.getLongitude() + "\n" + "ACC: " + location.getAccuracy() + "m\n";
+                    Log.d("location", location_string);
+                    weather();
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
+        } catch (SecurityException e) {
+            //user rejected request for permission
+            Log.d("location", "error");
+            Log.d("location", e.getLocalizedMessage());
+        }
     }
 
     //add testing functions here
@@ -184,13 +226,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Assignment button
-    public int ADD_ASSIGNMENT = 69;
+    public static int ADD_ASSIGNMENT = 69;
     public void addAssignment(View view){
         Intent i = new Intent(this,AddAssignment.class);
         startActivityForResult(i, ADD_ASSIGNMENT);
     }
-    public int SEE_ASSIGNMENT = 420;
 
+    public static int SEE_ASSIGNMENT = 420;
+    public static int DELETE_ASSIGNMENT = 2;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -229,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         //if result code is delete
-        if (resultCode == 2) {
+        if (resultCode == DELETE_ASSIGNMENT) {
             super.onActivityResult(requestCode, resultCode, data);
             int index = data.getIntExtra("index", 0);
             assignments.remove(index);
@@ -310,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
             //We have to grab the fact out of the JSON.
 
             String weatherMain;
-            String tempature;
+            String temperature;
             String icon;
             String location;
             try {
@@ -321,9 +364,9 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject main = json.getJSONObject("main");
 
                 weatherMain = first_obj.getString("description");
-                tempature = main.getString("temp");
-                float temp_num = Float.parseFloat(tempature);
-                tempature = makeWeatherString(convert(temp_num));
+                temperature = main.getString("temp");
+                float temp_num = Float.parseFloat(temperature);
+                temperature = makeWeatherString(convert(temp_num));
 
 
                 String icon_temp = first_obj.getString("icon");
@@ -345,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 mCardList.add(1,new weather_card());
-                setWeather(weatherMain, tempature, icon, location, night_day);
+                setWeather(weatherMain, temperature, icon, location, night_day);
             }
             catch(JSONException e) {
                 Log.d("error", e.toString());
@@ -353,8 +396,8 @@ public class MainActivity extends AppCompatActivity {
              //once the data has been collected, set the cat fact on the screen
         }
 
-        String makeWeatherString(float tempature_value) {
-            return Math.round(tempature_value) + "°c";
+        String makeWeatherString(float temperature_value) {
+            return Math.round(temperature_value) + "°c";
         }
 
         float convert(float temp) {
@@ -402,6 +445,60 @@ public class MainActivity extends AppCompatActivity {
         //        assignments = (List<Card>) assignments_load;
         assignments = gson.fromJson(json, type);
 //        mAdapter.notifyDataSetChanged();
+    }
+
+    //taken from android documentation
+    public static final int PERMISSION_REQUEST_LOCATION = 1337;
+
+    public void checkPerms(String permission, int requestCode) {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    permission)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{permission},
+                        requestCode);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            // Permission has already been granted
+            getLocation();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 }
 

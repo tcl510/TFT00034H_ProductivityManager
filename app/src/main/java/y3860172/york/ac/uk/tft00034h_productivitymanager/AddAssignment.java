@@ -123,12 +123,9 @@ public class AddAssignment extends AppCompatActivity {
         invalidateOptionsMenu();
 
 
-
-
-        //change to calender is duedate
+        //change to calender is dueDate
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(dueDate);
-
 
         DatePicker datePicker = findViewById(R.id.datePicker);
         datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
@@ -136,12 +133,17 @@ public class AddAssignment extends AppCompatActivity {
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         Log.d("time was set", "something happened");
                         Calendar temp = Calendar.getInstance();
+                        temp.clear();
                         temp.setTime(dueDate);
-                        temp.set(year - 1900, monthOfYear, dayOfMonth);
+                        temp.set(Calendar.YEAR, year);
+                        temp.set(Calendar.MONTH, monthOfYear);
+                        temp.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        dueDate = temp.getTime();
+
 //                        dueDate.setYear(year - 1900);
 //                        dueDate.setMonth(monthOfYear);
 //                        dueDate.setDate(dayOfMonth);
-                        dueDate = temp.getTime();
+////
                         updateDate();
                     }
                 }
@@ -154,10 +156,15 @@ public class AddAssignment extends AppCompatActivity {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 Calendar temp = Calendar.getInstance();
+                temp.clear();
                 temp.setTime(dueDate);
+
                 temp.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 temp.set(Calendar.MINUTE, minute);
                 dueDate = temp.getTime();
+
+//                dueDate.setHours(hourOfDay);
+//                dueDate.setMinutes(minute);
                 updateDate();
             }
         });
@@ -262,7 +269,7 @@ public class AddAssignment extends AppCompatActivity {
             try {
                 photoFile = imageFileCreator();
             } catch (IOException ex) {
-                Log.d("camera", "photofile failed");
+                Log.d("camera", "photoFile failed");
             }
 
             if (photoFile != null) {
@@ -392,7 +399,7 @@ public class AddAssignment extends AppCompatActivity {
         Intent i = new Intent(this, MainActivity.class);
         i.putExtra("assignment", payload());
         i.putExtra("index", index);
-        setResult(2, i);
+        setResult(MainActivity.DELETE_ASSIGNMENT, i);
         finish();
     }
         public Assignment payload () {

@@ -16,11 +16,11 @@ public class assignment_card implements Card {
         return Card.CARD_ASSIGNMENT;
     }
 
-    String assignment_title;
-    Date assigment_due;
-    int daysLeft;
-    int hoursLeft;
-    Assignment thisAssignment;
+    private String assignment_title;
+    private Date assignment_due;
+    private int daysLeft;
+    private int hoursLeft;
+    private Assignment thisAssignment;
 
     public String daysLeftString(int days){
         if (days < 1){
@@ -43,26 +43,26 @@ public class assignment_card implements Card {
     public assignment_card(Assignment assignment) {
         Log.d("assignment", assignment.toString());
         this.assignment_title = assignment.getTitle();
-        this.assigment_due = assignment.getDueDate();
+        this.assignment_due = assignment.getDueDate();
         this.daysLeft = getHowManyDays(assignment.getDueDate());
         this.hoursLeft = getHowManyHours(assignment.getDueDate());
         this.thisAssignment = assignment;
     }
 
-    public assignment_card(String assignment_title, Date assigment_due) {
+    public assignment_card(String assignment_title, Date assignment_due) {
         this.assignment_title = assignment_title;
-        this.assigment_due = assigment_due;
-        this.daysLeft = getHowManyDays(assigment_due);
-        this.hoursLeft = getHowManyHours(assigment_due);
-        this.thisAssignment = new Assignment(new ArrayList<String>(), assignment_title, assigment_due, "");
+        this.assignment_due = assignment_due;
+        this.daysLeft = getHowManyDays(assignment_due);
+        this.hoursLeft = getHowManyHours(assignment_due);
+        this.thisAssignment = new Assignment(new ArrayList<String>(), assignment_title, assignment_due, "");
     }
 
     public String getAssignment_title() {
         return assignment_title;
     }
 
-    public Date getAssigment_due() {
-        return assigment_due;
+    public Date getAssignment_due() {
+        return assignment_due;
     }
 
     public String getDaysLeft(){
@@ -71,13 +71,13 @@ public class assignment_card implements Card {
 
     public int getHowManyHours(Date dueDate){
         Date today = new Date();
-        long timeDiff = assigment_due.getTime() - today.getTime() - TimeUnit.MILLISECONDS.convert(daysLeft, TimeUnit.DAYS);
+        long timeDiff = assignment_due.getTime() - today.getTime() - TimeUnit.MILLISECONDS.convert(daysLeft, TimeUnit.DAYS);
         return (int)TimeUnit.HOURS.convert(timeDiff, TimeUnit.MILLISECONDS);
     }
 
     public int getHowManyDays(Date dueDate){
         Date today = new Date();
-        long timeDiff = assigment_due.getTime() - today.getTime();
+        long timeDiff = assignment_due.getTime() - today.getTime();
         return (int)TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
     }
     //todo make the compare time updatable in sync with timeupdate of mainactiv

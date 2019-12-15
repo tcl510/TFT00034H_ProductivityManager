@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.AddAssignment;
+import y3860172.york.ac.uk.tft00034h_productivitymanager.MainActivity;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.R;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignment_card;
@@ -55,7 +56,9 @@ public class assignmentAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         if (assignmentList == null){
-            return 0;
+            TempAssignmentList = new ArrayList<>();
+            TempAssignmentList.add(new assignment_card("", new Time(1)));
+            return 1;
         } else {
             if (assignmentList.size() == 0){
                 TempAssignmentList = new ArrayList<>();
@@ -106,7 +109,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
                     assignment_card card = (assignment_card) TempAssignmentList.get(pos);
                     i.putExtra("index", pos);
                     i.putExtra("assignment", card.getThisAssignment());
-                    ((Activity) context).startActivityForResult(i, 420);
+                    ((Activity) context).startActivityForResult(i, MainActivity.ADD_ASSIGNMENT);
                 }
             });
         }

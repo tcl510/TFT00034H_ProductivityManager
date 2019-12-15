@@ -24,9 +24,8 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.model.time_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 
 public class cardAdapter extends RecyclerView.Adapter{
-    public List<Card> infoList;
-    Context context;
-    private assignmentAdapter massignmentAdapter;
+    private List<Card> infoList;
+    private Context context;
 
     public cardAdapter(List<Card> infoList, Context context){
         this.infoList = infoList;
@@ -110,7 +109,8 @@ public class cardAdapter extends RecyclerView.Adapter{
         TextView txtSupporting;
         ImageView imgAvatar;
         ImageView imgMedia;
-        public tester_cardViewHolder(View itemView){
+
+        tester_cardViewHolder(View itemView) {
             super(itemView);
             //findviewby id
             txtTitle = itemView.findViewById(R.id.tester_card_title_text);
@@ -121,7 +121,7 @@ public class cardAdapter extends RecyclerView.Adapter{
         }
 
 
-        public void bindView(int position) {
+        void bindView(int position) {
             tester_card card = (tester_card) infoList.get(position);
             Log.d("something", card.getSubtitle());
             //bind data to views
@@ -139,7 +139,8 @@ public class cardAdapter extends RecyclerView.Adapter{
         TextView weatherLocation;
         TextView weatherTempature;
         TextView weatherImage;
-        public weather_cardViewHolder(View itemView){
+
+        weather_cardViewHolder(View itemView) {
 
             super(itemView);
             //fineviewby id
@@ -149,7 +150,7 @@ public class cardAdapter extends RecyclerView.Adapter{
             weatherImage = itemView.findViewById(R.id.weather_image);
         }
 
-        public void bindView(int position){
+        void bindView(int position) {
             weather_card card = (weather_card) infoList.get(position);
              weatherCondition.setText(card.getCondition());
             weatherLocation.setText(card.getLocation());
@@ -172,20 +173,21 @@ public class cardAdapter extends RecyclerView.Adapter{
 
         TextView title;
 
-        public assignments_cardViewHolder(View itemView){
+        assignments_cardViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.first_thing_title);
             assignment_list = itemView.findViewById(R.id.list_of_events_list);
             assignment_list.setLayoutManager(layoutManager);
 
         }
-        public void bindView(int position){
+
+        void bindView(int position) {
             assignments_card card = (assignments_card) infoList.get(position);
             title.setText(card.getTitle());
 //            Log.d("something", "adapter invoked");
 
 
-            massignmentAdapter = new assignmentAdapter(card.getAssignments(), context);
+            assignmentAdapter massignmentAdapter = new assignmentAdapter(card.getAssignments(), context);
 
 
             assignment_list.setAdapter(massignmentAdapter);
@@ -196,13 +198,15 @@ public class cardAdapter extends RecyclerView.Adapter{
     class time_cardViewHolder extends RecyclerView.ViewHolder{
         TextView time;
         TextView date;
-        public time_cardViewHolder(View itemView){
+
+        time_cardViewHolder(View itemView) {
             super(itemView);
             time = itemView.findViewById(R.id.time);
             date = itemView.findViewById(R.id.date);
 
         }
-        public void bindView(int position){
+
+        void bindView(int position) {
             time_card card = (time_card) infoList.get(position);
             time.setText(card.getTimeString());
             date.setText(card.getFullLowerString());
