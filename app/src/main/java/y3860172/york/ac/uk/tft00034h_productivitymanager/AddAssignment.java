@@ -300,7 +300,6 @@ public class AddAssignment extends AppCompatActivity {
 //        TransitionManager.beginDelayedTransition((ViewGroup) v.getParent(), new AutoTransition());
         VisExpander(findViewById(R.id.datePicker), (TextView) findViewById(R.id.date_display));
         VisDisable(findViewById(R.id.TimePicker), (TextView) findViewById(R.id.time_display));
-        //todo make selected text darker
     }
 
     public void VisExpander(View picker, TextView buttonText) {
@@ -330,18 +329,13 @@ public class AddAssignment extends AppCompatActivity {
             view.setTypeface(Typeface.DEFAULT);
         }
     }
-        //todo add time and date updates to tags
-        //todo make the pickers start at current time
-        //todo make transitions, its kinda fixed but needs work
-        //todo make focus
-        //todo finish the picture recycleview
-        //todo picture recycleview add camera functionality
-        //todo add picture view when clicked
-        //todo add delete function for picture recycleview
-        //todo add voice memo recycleview
-        //todo make data saving in each Assignment
 
-        public Bitmap BitmapConverter ( int image){
+
+    //todo add delete function for picture recycleview
+        //todo add voice memo recycleview
+
+
+    public Bitmap BitmapConverter ( int image){
             Bitmap icon = BitmapFactory.decodeResource(getResources(),
                     image);
             return icon;

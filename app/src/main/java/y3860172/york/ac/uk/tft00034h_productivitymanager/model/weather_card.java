@@ -2,8 +2,6 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager.model;
 
 import android.graphics.Color;
 
-import java.net.URL;
-
 public class weather_card implements Card  {
 
     @Override
@@ -13,9 +11,9 @@ public class weather_card implements Card  {
     public String location;
     public String condition;
     public String temperature_string;
-    public float temperature;
+    //    public float temperature;
     public String weather_image = "";
-    public URL url;
+    //    public URL url;
     public String night_day;
 
     public weather_card(String location, String condition, float temperature) {
@@ -32,7 +30,7 @@ public class weather_card implements Card  {
     }
     //DONE add day night color difference
 
-    public String makeTemperatureString(float temperature){
+    private String makeTemperatureString(float temperature) {
         return temperature + "°C";
     }
 

@@ -23,5 +23,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_add_a_photo_24px"
         tools:srcCompat="@drawable/ic_add_a_photo_24px" />
-    <!--TODO https://stackoverflow.com/questions/33575731/gridlayoutmanager-how-to-auto-fit-columns-->
 </androidx.constraintlayout.widget.ConstraintLayout>

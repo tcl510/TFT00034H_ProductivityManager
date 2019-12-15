@@ -23,10 +23,6 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.time_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 
-//import com.bumptech.glide.Glide;
-
-//todo yo wtf https://medium.com/aubergine-solutions/creating-recyclerview-layout-in-android-no-pain-only-gain-404280471003
-
 public class cardAdapter extends RecyclerView.Adapter{
     public List<Card> infoList;
     Context context;

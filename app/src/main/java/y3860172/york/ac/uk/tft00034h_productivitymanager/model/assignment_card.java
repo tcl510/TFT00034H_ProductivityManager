@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.types.Assignment;
 
-public class assignment_card implements Card { //todo add button add more functionality
+public class assignment_card implements Card {
 
     @Override
     public int getType() {
@@ -62,11 +62,10 @@ public class assignment_card implements Card { //todo add button add more functi
     }
 
     public Date getAssigment_due() {
-        return assigment_due; //todo parse time
+        return assigment_due;
     }
 
     public String getDaysLeft(){
-        //todo maybe make this countdown?
         return daysLeftString(daysLeft) + " " + hoursLeftString(hoursLeft);
     }
 

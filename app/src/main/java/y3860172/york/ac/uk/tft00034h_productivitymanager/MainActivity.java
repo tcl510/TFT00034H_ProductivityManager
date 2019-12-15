@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,12 +47,12 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.types.Assignment;
 //todo (might scrap) setup different pages and link with tabs https://developer.android.com/reference/com/google/android/material/tabs/TabLayout#setupWithViewPager\(ViewPager\) https://material.io/develop/android/components/tab-layout/
 //todo make since u went thru the effort of making it all recycleview, make a setting page where u can modify the homepage! https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf#.u7416aupw
 //todo make the settings page, where u can modify the layout
-//todo add the calender functionality
+//todo add the calender functionality (in the future)
+//todo 5 days a week in a future()
+//todo grey out 5 days
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecycleView;
     private cardAdapter mAdapter;
-
     private List<Card> mCardList;
     public List<Card> assignments;
     public String weather_current;
@@ -92,21 +93,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume(){
-//        mAdapter.notifyDataSetChanged();
         super.onResume();
-//        Intent i = getIntent();
-//
-//        List<Card> newAssignment = (List<Card>)i.getSerializableExtra("assignments");
-//        if (newAssignment != null){
-//            assignments = newAssignment;
-//        }
     }
 
-    //todo if u have time, make the runnable run from the adaptor or from the class itself
     public Runnable runnable = new Runnable() {
 
         public void run() {
-            boolean update = false;
+//            boolean update = false;
             for (Card card : mCardList) {
                 if (card.getType() == Card.CARD_TIME) {
                     time_card temp = (time_card) card;
@@ -116,9 +109,9 @@ public class MainActivity extends AppCompatActivity {
                     mAdapter.notifyItemChanged(mCardList.indexOf(card), ((time_card) card).fullLowerString);
                 }
             }
-            if (update) {
-
-            }
+//            if (update) {
+//
+//            }
             handler.postDelayed(this, 500);
         }
     };
@@ -126,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void card(){
         //binding recycleview
-        mRecycleView = findViewById(R.id.idRecycleView);
+        RecyclerView mRecycleView = findViewById(R.id.idRecycleView);
         //fix size
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         //populate
@@ -205,8 +198,12 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == ADD_ASSIGNMENT && resultCode == Activity.RESULT_OK) {
             super.onActivityResult(requestCode, resultCode, data);
             Assignment assignment = data.getParcelableExtra("assignment");
-            assignments.add(0, new assignment_card(assignment));
-//            assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
+            if (assignment == null) {
+                Toast toast = Toast.makeText(this, "Assignment failed to add", Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                assignments.add(0, new assignment_card(assignment));
+            }
             for (Card card : mCardList) {
                 if (card.getType() == Card.CARD_ASSIGNMENTS) {
                     mAdapter.notifyItemChanged(mCardList.indexOf(card));
@@ -218,8 +215,12 @@ public class MainActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
             Assignment assignment = data.getParcelableExtra("assignment");
             int index = data.getIntExtra("index",0);
-            assignments.set(index, new assignment_card(assignment));
-//            assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
+            if (assignment == null) {
+                Toast toast = Toast.makeText(this, "Assignment failed to update", Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                assignments.set(index, new assignment_card(assignment));
+            }
             for (Card card : mCardList) {
                 if (card.getType() == Card.CARD_ASSIGNMENTS) {
                     mAdapter.notifyItemChanged(mCardList.indexOf(card));
@@ -307,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
             //Load the link in a web browser to see the kind of data we get: https://catfact.ninja/fact
 
             //We have to grab the fact out of the JSON.
-            String weather_state;
+
             String weatherMain;
             String tempature;
             String icon;
@@ -330,11 +331,9 @@ public class MainActivity extends AppCompatActivity {
                 for (char c: icon_temp.toCharArray()){
                     if (Character.isLetter(c)){
                         night_day_char = c;
-                        Log.d("something", String.valueOf(c));
                     }
                 }
                 String night_day = String.valueOf(night_day_char);
-                Log.d("soemthing2", icon_temp);
                 if (icon_temp.contains("d")) {
                     int resID = getResources().getIdentifier("wi_owm_day_" + first_obj.getString("id"), "string", getPackageName());
                     icon = getString(resID);
@@ -342,9 +341,6 @@ public class MainActivity extends AppCompatActivity {
                     int resID = getResources().getIdentifier("wi_owm_night_" + first_obj.getString("id"), "string", getPackageName());
                     icon = getString(resID);
                 }
-                Log.d("something",first_obj.getString("id"));
-//                icon = first_obj.getString("id");
-
                 location = json.getString("name");
 
 
@@ -352,20 +348,20 @@ public class MainActivity extends AppCompatActivity {
                 setWeather(weatherMain, tempature, icon, location, night_day);
             }
             catch(JSONException e) {
-                weather_state = e.getLocalizedMessage(); //if there is an error in the JSON.
-                Log.d("something", e.toString());
+                Log.d("error", e.toString());
             }
              //once the data has been collected, set the cat fact on the screen
         }
 
-        public String makeWeatherString(float tempature_value){
+        String makeWeatherString(float tempature_value) {
             return Math.round(tempature_value) + "°c";
         }
-        public float convert(float temp){
+
+        float convert(float temp) {
             return temp - 273;
         }
-        public void setWeather(String weather_state, String tempature, String icon, String location, String night_day) {
-//        Card temp_cardlist = mCardList.get(0);
+
+        void setWeather(String weather_state, String tempature, String icon, String location, String night_day) {
             int index = 1;
             weather_card temp = (weather_card)mCardList.get(index);
             //set strings
@@ -395,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(assignments);
         prefsEditor.putString("assignments", json);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
     public void loadData(){
         SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
@@ -403,10 +399,9 @@ public class MainActivity extends AppCompatActivity {
         String json = mPrefs.getString("assignments", "");
         Log.d("json", json);
         Type type = new TypeToken<List<assignment_card>>(){}.getType();
-        List<Card> assignments_load = gson.fromJson(json, type);
-//        assignments = (List<Card>) assignments_load;
-        assignments = assignments_load;
+        //        assignments = (List<Card>) assignments_load;
+        assignments = gson.fromJson(json, type);
 //        mAdapter.notifyDataSetChanged();
     }
 }
-//TODO SAVE THE INTENT https://stackoverflow.com/questions/34736166/android-how-to-save-data-intents-data
+
