@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -40,6 +42,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.cardAdapter;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
@@ -134,7 +137,9 @@ public class MainActivity extends AppCompatActivity {
         mCardList = new ArrayList<>();
 
         mCardList.add(new time_card());
+        mCardList.add(new weather_card());
         mCardList.add(new assignments_card(assignments));
+
 
         mCardList.add(new tester_card("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
         mCardList.add(new assignments_card(assignments));
@@ -153,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         loadData();
     }
 
+    private int counter = -1;
     public void getLocation() {
 //        checkPerms(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSION_REQUEST_LOCATION);
         //todo change names
@@ -165,7 +171,22 @@ public class MainActivity extends AppCompatActivity {
                 public void onLocationChanged(Location location) {
                     String location_string = "POSITION:\n" + "LAT: " + location.getLatitude() + "\n" + "LNG: " + location.getLongitude() + "\n" + "ACC: " + location.getAccuracy() + "m\n";
                     Log.d("location", location_string);
-                    weather();
+                    Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                    List<Address> addresses = null;
+                    try {
+                        addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    String cityName = addresses.get(0).getAddressLine(0);
+                    Log.d("location", cityName);
+                    //super ghetto way of making it update only once every 3 location updateds to save api calls
+                    counter += 1;
+                    Log.d("location", String.valueOf(counter));
+                    if (counter % 3 == 0) {
+                        Log.d("location", "weather updated");
+                        weather();
+                    }
                 }
 
                 @Override
@@ -241,6 +262,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == ADD_ASSIGNMENT && resultCode == Activity.RESULT_OK) {
             super.onActivityResult(requestCode, resultCode, data);
             Assignment assignment = data.getParcelableExtra("assignment");
+            Log.d("error", assignment.getNotes());
+
             if (assignment == null) {
                 Toast toast = Toast.makeText(this, "Assignment failed to add", Toast.LENGTH_SHORT);
                 toast.show();
@@ -269,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
                     mAdapter.notifyItemChanged(mCardList.indexOf(card));
                 }
             }
-
         }
         //if result code is delete
         if (resultCode == DELETE_ASSIGNMENT) {
@@ -387,7 +409,6 @@ public class MainActivity extends AppCompatActivity {
                 location = json.getString("name");
 
 
-                mCardList.add(1,new weather_card());
                 setWeather(weatherMain, temperature, icon, location, night_day);
             }
             catch(JSONException e) {
@@ -405,9 +426,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         void setWeather(String weather_state, String tempature, String icon, String location, String night_day) {
+//            for (Card card: mCardList){
+//                if (card.getType() == Card.CARD_WEATHER){
+//                    ((weather_card)card).condition = weather_state.substring(0,1).toUpperCase() + weather_state.substring(1); //done capitalize first word
+//                    ((weather_card)card).temperature_string = tempature;
+//
+//                    //set picture
+//                    ((weather_card)card).weather_image = icon;
+//                    ((weather_card)card).night_day = night_day;
+//
+//                    //set location
+//                    ((weather_card)card).location = location;
+//
+////                    final Card set = mCardList.set(index, temp);
+//                    weather_current = weather_state;
+//                    mAdapter.notifyItemChanged(mCardList.indexOf(card));
+//                }
+//            }
             int index = 1;
             weather_card temp = (weather_card)mCardList.get(index);
-            //set strings
+
 
             temp.condition = weather_state.substring(0,1).toUpperCase() + weather_state.substring(1); //done capitalize first word
             temp.temperature_string = tempature;

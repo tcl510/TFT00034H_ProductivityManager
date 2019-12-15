@@ -27,6 +27,7 @@ public class weather_card implements Card  {
         this.condition = "Connect to the internet for weather data";//done not show weather card unless theres info
         this.temperature_string = null;
         this.weather_image = null;
+        this.night_day = "d";
     }
     //DONE add day night color difference
 
