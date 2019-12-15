@@ -3,7 +3,6 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +31,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
     private Context context;
 
 
-
-    public assignmentAdapter(List<Card> assignmentList, Context context) {
+    assignmentAdapter(List<Card> assignmentList, Context context) {
         this.assignmentList = assignmentList;
         this.context = context;
         Log.d("something", "adapter invoked");
@@ -104,18 +102,8 @@ public class assignmentAdapter extends RecyclerView.Adapter {
                 public void onClick(View v){
                     int pos = getAdapterPosition();
                     Log.d("adaptor", String.valueOf(pos));
-                   /* if (pos != RecyclerView.NO_POSITION){
-                        Movie clickedDataItem = movieList.get(pos);
-                        Intent intent = new Intent(mContext, DetailActivity.class);
-                        intent.putExtra("movies", clickedDataItem );
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(intent);
-                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getOriginalTitle(), Toast.LENGTH_SHORT).show();
-                    }*/
                     Intent i = new Intent(context, AddAssignment.class);
                     assignment_card card = (assignment_card) TempAssignmentList.get(pos);
-                    Bundle extras = new Bundle();
-
                     i.putExtra("index", pos);
                     i.putExtra("assignment", card.getThisAssignment());
                     ((Activity) context).startActivityForResult(i, 420);
@@ -133,7 +121,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
                 button.setVisibility(View.INVISIBLE);
                 title.setVisibility(View.INVISIBLE);
                 due.setVisibility(View.INVISIBLE);
-                empty.setText("Yay, no assignments");
+                empty.setText(R.string.no_assignments);
             } else {
                 empty.setVisibility(View.INVISIBLE);
                 title.setText(card.getAssignment_title());

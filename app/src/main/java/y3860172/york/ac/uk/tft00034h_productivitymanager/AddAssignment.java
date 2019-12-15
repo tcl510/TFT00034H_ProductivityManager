@@ -2,8 +2,6 @@ package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,9 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBar;
@@ -34,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.imageAdaptor;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Media;
@@ -44,7 +43,6 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.types.Assignment;
 public class AddAssignment extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1888;
-    private static final int MY_CAMERA_PERMISSION_CODE = 100;
     final public int ASSIGNMENT_MODE_NEW = 1;
     final public int ASSIGNMENT_MODE_EDIT = 0;
     public Date dueDate = new Date();
@@ -59,8 +57,6 @@ public class AddAssignment extends AppCompatActivity {
     private int index;
     private File photoFile = null;
     private int assignmentMode;
-    private ImageView imageView;
-    private String currentPhotoPath;
     //todo intent setTheme()
 
     @Override
@@ -84,7 +80,7 @@ public class AddAssignment extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
-
+        assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
 
 
@@ -94,16 +90,29 @@ public class AddAssignment extends AppCompatActivity {
         if (getIntent().hasExtra("assignment")) {
             //set parcel items to everything
             Bundle data = getIntent().getExtras();
-            Assignment assignment = data.getParcelable("assignment");
-            title = assignment.getTitle();
-            notes = assignment.getNotes();
-            dueDate = assignment.getDueDate();
-            List<String> bitmapList = assignment.getPhotos();
-            for (String photo : bitmapList) {
-                mPhotoList.add(new picture(photo));
+
+            if (data != null) {
+                Assignment assignment;
+                assignment = data.getParcelable("assignment");
+                if (assignment != null) {
+                    title = assignment.getTitle();
+                    notes = assignment.getNotes();
+                    dueDate = assignment.getDueDate();
+                    List<String> bitmapList = assignment.getPhotos();
+                    for (String photo : bitmapList) {
+                        mPhotoList.add(new picture(photo));
+                    }
+                }
+            } else {
+                Toast toast = Toast.makeText(this, "failed to retrieve assignment", Toast.LENGTH_SHORT);
+                toast.show();
             }
             //set index get index
-            index = data.getInt("index");
+            if (data != null) {
+                index = data.getInt("index");
+            } else {
+                index = 0;
+            }
             Log.d("adaptor",String.valueOf(index));
             assignmentMode = ASSIGNMENT_MODE_EDIT;
 
@@ -126,9 +135,13 @@ public class AddAssignment extends AppCompatActivity {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         Log.d("time was set", "something happened");
-                        dueDate.setYear(year - 1900);
-                        dueDate.setMonth(monthOfYear);
-                        dueDate.setDate(dayOfMonth);
+                        Calendar temp = Calendar.getInstance();
+                        temp.setTime(dueDate);
+                        temp.set(year - 1900, monthOfYear, dayOfMonth);
+//                        dueDate.setYear(year - 1900);
+//                        dueDate.setMonth(monthOfYear);
+//                        dueDate.setDate(dayOfMonth);
+                        dueDate = temp.getTime();
                         updateDate();
                     }
                 }
@@ -140,8 +153,11 @@ public class AddAssignment extends AppCompatActivity {
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                dueDate.setHours(hourOfDay);
-                dueDate.setMinutes(minute);
+                Calendar temp = Calendar.getInstance();
+                temp.setTime(dueDate);
+                temp.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                temp.set(Calendar.MINUTE, minute);
+                dueDate = temp.getTime();
                 updateDate();
             }
         });
@@ -198,10 +214,10 @@ public class AddAssignment extends AppCompatActivity {
     }
 
     private void updateDate() {
-        SimpleDateFormat dd_mmm = new SimpleDateFormat("dd MMM");
+        SimpleDateFormat dd_mmm = new SimpleDateFormat("dd MMM", Locale.getDefault());
         TextView dateText = findViewById(R.id.date_display);
         dateText.setText(dd_mmm.format(dueDate));
-        SimpleDateFormat hhmm = new SimpleDateFormat("hh:mm aa");
+        SimpleDateFormat hhmm = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
         TextView timeText = findViewById(R.id.time_display);
         timeText.setText(hhmm.format(dueDate));
     }
@@ -263,7 +279,7 @@ public class AddAssignment extends AppCompatActivity {
         private File imageFileCreator () throws IOException {
             //taken from https://developer.android.com/training/camera/photobasics
             // Create an image file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
             String imageFileName = "JPEG_" + timeStamp + "_";
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             File image = File.createTempFile(
@@ -273,7 +289,7 @@ public class AddAssignment extends AppCompatActivity {
             );
 
             // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = image.getAbsolutePath();
+            String currentPhotoPath = image.getAbsolutePath();
             return image;
         }
 
@@ -281,9 +297,9 @@ public class AddAssignment extends AppCompatActivity {
         protected void onActivityResult ( int requestCode, int resultCode, Intent data){
             if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
                 super.onActivityResult(requestCode, resultCode, data);
-                Bundle extras = data.getExtras();
-//                Bitmap photo = (Bitmap) extras.get("data");
-                Bitmap photo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+//                Bundle extras = data.getExtras();
+////                Bitmap photo = (Bitmap) extras.get("data");
+//                Bitmap photo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 mPhotoList.add(0, new picture(photoFile.getAbsolutePath()));
                 mAdaptor.notifyItemInserted(0);
 
@@ -335,18 +351,18 @@ public class AddAssignment extends AppCompatActivity {
         //todo add voice memo recycleview
 
 
-    public Bitmap BitmapConverter ( int image){
-            Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                    image);
-            return icon;
-        }
-        public void save (View view){
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("assignment", payload());
-            i.putExtra("index", index);
-            setResult(Activity.RESULT_OK, i);
-            finish();
-        }
+//    public Bitmap BitmapConverter ( int image){
+//            Bitmap icon = BitmapFactory.decodeResource(getResources(),
+//                    image);
+//            return icon;
+//        }
+//        public void save (View view){
+//            Intent i = new Intent(this, MainActivity.class);
+//            i.putExtra("assignment", payload());
+//            i.putExtra("index", index);
+//            setResult(Activity.RESULT_OK, i);
+//            finish();
+//        }
 
     public void save() {
         Intent i = new Intent(this, MainActivity.class);
@@ -355,14 +371,14 @@ public class AddAssignment extends AppCompatActivity {
         setResult(Activity.RESULT_OK, i);
         finish();
     }
-        //Assignment button
-        public void back (View view){
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("assignment", payload());
-            i.putExtra("index", index);
-            setResult(Activity.RESULT_CANCELED, i);
-            finish();
-        }
+//        //Assignment button
+//        public void back (View view){
+//            Intent i = new Intent(this, MainActivity.class);
+//            i.putExtra("assignment", payload());
+//            i.putExtra("index", index);
+//            setResult(Activity.RESULT_CANCELED, i);
+//            finish();
+//        }
 
     public void back() {
         Intent i = new Intent(this, MainActivity.class);
