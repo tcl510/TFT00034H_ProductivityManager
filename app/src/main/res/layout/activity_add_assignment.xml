@@ -41,14 +41,6 @@
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true">
 
-                    <ImageView
-                        android:id="@+id/demo_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/Additional_notes"
-                        app:srcCompat="@drawable/sunset" />
-
                     <androidx.cardview.widget.CardView
                         android:id="@+id/Title_dueDate"
                         android:layout_width="match_parent"

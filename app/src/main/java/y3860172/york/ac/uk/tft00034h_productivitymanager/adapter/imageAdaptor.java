@@ -92,57 +92,17 @@ public class imageAdaptor extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
-                    Log.d("adaptor", String.valueOf(pos));
                     picture temp = (picture) PhotoList.get(pos);
-//                    Intent i = new Intent();
-//                    Intent intent = new Intent();
-//                    intent.setAction(Intent.ACTION_VIEW);
-////                    intent.setDataAndType(Uri.parse(temp.getImage_file_path()), "image/*");
-//                    Uri.fromFile(new File(temp.getImage_file_path()));
-//                    intent.setDataAndType(Uri.fromFile(new File(temp.getImage_file_path())),"image/*");
-//                    ((Activity) context).startActivityForResult(i,1);
-//                    Log.d("error", temp.getImage_file_path());
-////                    File file = new File(Environment.getExternalStorageDirectory(), temp.getImage_file_path());
-//                    File file = new File(temp.getImage_file_path());
-////                    Toast.makeText(MainActivity.this, file.getPath(), Toast.LENGTH_LONG).show();
-//                    Uri path = Uri.fromFile(file);
-//                    if (file.exists()) {
-//                        Intent intent = new Intent();
-//                        intent.setAction(android.content.Intent.ACTION_VIEW);
-//                        intent.setDataAndType(path, "image/*");
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        try {
-//                            context.startActivity(intent);
-//                            Log.d("error", "what");
-//                        } catch (ActivityNotFoundException e) {
-//                            Log.d("error", "error");
-//                        }
-//                    }
-
-//                    Uri photoURI = FileProvider.getUriForFile(this,
-//                            "example.fileprovider",
-//                            photoFile);
-//                Uri photoURI = Uri.parse("content:/" + temp.getImage_file_path());
-                    Uri photo = Uri.fromFile(new File(temp.getImage_file_path()));
                     Uri photoURI = FileProvider.getUriForFile(context,
                             "example.fileprovider",
                             new File(temp.getImage_file_path()));
+
                     Intent intent = new Intent();
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setDataAndType(photoURI, "image/*");
                     context.startActivity(intent);
-
-                    //todo fix this shit
                     Log.d("camera", temp.getImage_file_path());
-
-
-
-//                    Intent intent = new Intent();
-//                    intent.setAction(android.content.Intent.ACTION_VIEW);
-//                    intent.setType("image/*");
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    ((Activity) context).startActivity(intent);
                 }
             });
         }

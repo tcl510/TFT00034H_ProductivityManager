@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,21 +43,25 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.types.Assignment;
 
 public class AddAssignment extends AppCompatActivity {
 
+    private static final int CAMERA_REQUEST = 1888;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    final public int ASSIGNMENT_MODE_NEW = 1;
+    final public int ASSIGNMENT_MODE_EDIT = 0;
     public Date dueDate = new Date();
     public String title;
     public String notes;
     public RecyclerView mRecycleView;
+    EditText title_input;
+    EditText notes_input;
     private List<Media> mPhotoList;
-    //todo add voice recording
+    //todo add voice recording (maybe in the future)
     private imageAdaptor mAdaptor;
     private int index;
     private File photoFile = null;
-    final public int ASSIGNMENT_MODE_NEW = 1;
-    final public int ASSIGNMENT_MODE_EDIT = 0;
     private int assignmentMode;
-
-    EditText title_input;
-    EditText notes_input;
+    private ImageView imageView;
+    private String currentPhotoPath;
+    //todo intent setTheme()
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +157,7 @@ public class AddAssignment extends AppCompatActivity {
 
         return true;
     }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
@@ -190,7 +196,6 @@ public class AddAssignment extends AppCompatActivity {
         }
         return super.onPrepareOptionsMenu(menu);
     }
-    //todo intent setTheme()
 
     private void updateDate() {
         SimpleDateFormat dd_mmm = new SimpleDateFormat("dd MMM");
@@ -231,19 +236,6 @@ public class AddAssignment extends AppCompatActivity {
         mAdaptor = new imageAdaptor(mPhotoList, this);
         mRecycleView.setAdapter(mAdaptor);
     }
-
-    public void onClickToggleDate(View v) {
-//        TransitionManager.beginDelayedTransition((ViewGroup) v.getParent(), new AutoTransition());
-        VisExpander(findViewById(R.id.datePicker));
-        VisDisable(findViewById(R.id.TimePicker));
-        //todo make selected text darker
-    }
-
-
-    private static final int CAMERA_REQUEST = 1888;
-    private ImageView imageView;
-    private static final int MY_CAMERA_PERMISSION_CODE = 100;
-    private String currentPhotoPath;
 
     public void camera(View view) {
 
@@ -296,45 +288,48 @@ public class AddAssignment extends AppCompatActivity {
                 mAdaptor.notifyItemInserted(0);
 
                 Log.d("camera", photoFile.getAbsolutePath());
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "example.fileprovider",
-                        photoFile);
-//                Uri photoURI = Uri.parse("content:/" + photoFile.getAbsolutePath());
-//                Uri photoURI = Uri.fromFile(photoFile);
-                showPhoto(photoURI);
-
             }
         }
 
-    private void showPhoto(Uri photoUri) {
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(photoUri, "image/*");
-        startActivity(intent);
+        public void onClickToggleTime (View v){
+            VisExpander(findViewById(R.id.TimePicker), (TextView) findViewById(R.id.time_display));
+            VisDisable(findViewById(R.id.datePicker), (TextView) findViewById(R.id.date_display));
+        }
+
+    public void onClickToggleDate(View v) {
+//        TransitionManager.beginDelayedTransition((ViewGroup) v.getParent(), new AutoTransition());
+        VisExpander(findViewById(R.id.datePicker), (TextView) findViewById(R.id.date_display));
+        VisDisable(findViewById(R.id.TimePicker), (TextView) findViewById(R.id.time_display));
+        //todo make selected text darker
     }
 
-
-        public void onClickToggleTime (View v){
-            VisExpander(findViewById(R.id.TimePicker));
-            VisDisable(findViewById(R.id.datePicker));
-        }
-        public void VisExpander (View picker){
+    public void VisExpander(View picker, TextView buttonText) {
 //        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent().getParent().getParent(), new AutoTransition());
 //        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent(), new AutoTransition());
             if (picker.getVisibility() == View.GONE) {
                 picker.setVisibility(View.VISIBLE);
+                toggleBold(buttonText, true);
             } else {
                 picker.setVisibility(View.GONE);
+                toggleBold(buttonText, false);
             }
         }
-        public void VisDisable (View picker){
+
+    public void VisDisable(View picker, TextView otherText) {
 //        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent().getParent(), new AutoTransition());
 //        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent().getParent().getParent(), new AutoTransition());
 //        TransitionManager.beginDelayedTransition((ViewGroup) picker.getParent(), new AutoTransition());
-
+        toggleBold(otherText, false);
             picker.setVisibility(View.GONE);
         }
+
+    public void toggleBold(TextView view, boolean YN) {
+        if (YN) {
+            view.setTypeface(Typeface.DEFAULT_BOLD);
+        } else {
+            view.setTypeface(Typeface.DEFAULT);
+        }
+    }
         //todo add time and date updates to tags
         //todo make the pickers start at current time
         //todo make transitions, its kinda fixed but needs work

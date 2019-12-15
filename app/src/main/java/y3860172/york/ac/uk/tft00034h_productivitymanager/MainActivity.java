@@ -1,11 +1,8 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -149,12 +146,16 @@ public class MainActivity extends AppCompatActivity {
     }
     public void initialize(){
         /*todo add gps https://github.com/rohitsthaa/retrofit-openweather   https://stackoverflow.com/questions/2227292/how-to-get-latitude-and-longitude-of-the-mobile-device-in-android https://github.com/UoY-TFTV-InteractiveMedia/MobileInteraction/blob/master/SensorExamples/Position/app/src/main/java/uk/ac/york/tftv/im/mi/position/MainActivity.java*/
+        //call weather api
         weather();
+        //start timer
         handler.postDelayed(runnable, 500);
+        //make a new list of assignments
         assignments = new ArrayList<>();
         loadData();
     }
 
+    //add testing functions here
     public void tester(View view){
 //        assignments.add(new assignment_card("Mobile interaction", new Time(15884848)));
 //        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=hong+kong,cn&APPID=" + weatherKey);
@@ -162,29 +163,31 @@ public class MainActivity extends AppCompatActivity {
 //        testSave();
 //        testLoad();
 //        saveData();
-        openImage();
+//        openImage();
     }
 
-    void openImage() {
+    //test code
+//    void openImage() {
+////        Intent intent = new Intent();
+////        Uri uri = Uri.parse("android.resource://y3860172.york.ac.uk.tft00034h_productivitymanager/drawable/tedted.jpg");
+////        intent.setAction(Intent.ACTION_VIEW);
+////        intent.setDataAndType(uri, "image/*");
+//////        startActivity(intent);
+////        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+////        Uri uri = Uri.parse("android.resource://y3860172.york.ac.uk.tft00034h_productivitymanager/drawable/tedted.jpg");
+//        Resources resources = this.getResources();
+//        int resId = R.drawable.tedted;
+//        Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + resources.getResourcePackageName(resId) + '/' + resources.getResourceTypeName(resId) + '/' + resources.getResourceEntryName(resId));
+//        showPhoto(uri);
+//    }
+
+    //test code
+//    private void showPhoto(Uri photoUri) {
 //        Intent intent = new Intent();
-//        Uri uri = Uri.parse("android.resource://y3860172.york.ac.uk.tft00034h_productivitymanager/drawable/tedted.jpg");
 //        intent.setAction(Intent.ACTION_VIEW);
-//        intent.setDataAndType(uri, "image/*");
-////        startActivity(intent);
-//        startActivity(new Intent(Intent.ACTION_VIEW, uri));
-//        Uri uri = Uri.parse("android.resource://y3860172.york.ac.uk.tft00034h_productivitymanager/drawable/tedted.jpg");
-        Resources resources = this.getResources();
-        int resId = R.drawable.tedted;
-        Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + resources.getResourcePackageName(resId) + '/' + resources.getResourceTypeName(resId) + '/' + resources.getResourceEntryName(resId));
-        showPhoto(uri);
-    }
-
-    private void showPhoto(Uri photoUri) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(photoUri, "image/*");
-        startActivity(intent);
-    }
+//        intent.setDataAndType(photoUri, "image/*");
+//        startActivity(intent);
+//    }
 
 
     //Assignment button
@@ -198,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if add assignment
         if (requestCode == ADD_ASSIGNMENT && resultCode == Activity.RESULT_OK) {
             super.onActivityResult(requestCode, resultCode, data);
             Assignment assignment = data.getParcelableExtra("assignment");
@@ -223,13 +227,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+        //if result code is delete
         if (resultCode == 2) {
             super.onActivityResult(requestCode, resultCode, data);
-//            Assignment assignment = (Assignment) data.getParcelableExtra("assignment");
             int index = data.getIntExtra("index", 0);
-//            assignments.set(index, new assignment_card(assignment));
             assignments.remove(index);
-//            assignments.add(new assignment_card("Mobile interaction 2", new Time(15884848)));
             for (Card card : mCardList) {
                 if (card.getType() == Card.CARD_ASSIGNMENTS) {
                     mAdapter.notifyItemChanged(mCardList.indexOf(card));

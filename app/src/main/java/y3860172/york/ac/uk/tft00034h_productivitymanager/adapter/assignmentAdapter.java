@@ -92,7 +92,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
         Button button;
         private assignment_cardViewHolder(View itemView){
             super(itemView);
-            //todo impliment the position in get index, basically fix getadapterposition
+            //done impliment the position in get index, basically fix getadapterposition (solved adaptor side)
             //findviewby id
             title = itemView.findViewById(R.id.assignment_title);
             due = itemView.findViewById(R.id.assignment_due);
@@ -114,7 +114,6 @@ public class assignmentAdapter extends RecyclerView.Adapter {
                     }*/
                     Intent i = new Intent(context, AddAssignment.class);
                     assignment_card card = (assignment_card) TempAssignmentList.get(pos);
-                    //todo add index
                     Bundle extras = new Bundle();
 
                     i.putExtra("index", pos);

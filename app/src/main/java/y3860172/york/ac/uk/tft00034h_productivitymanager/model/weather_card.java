@@ -26,14 +26,14 @@ public class weather_card implements Card  {
     }
     public weather_card(){
         this.location = "--";
-        this.condition = "Connect to the internet for weather data";//todo not show weather card unless theres info
+        this.condition = "Connect to the internet for weather data";//done not show weather card unless theres info
         this.temperature_string = null;
         this.weather_image = null;
     }
     //DONE add day night color difference
 
     public String makeTemperatureString(float temperature){
-        return String.valueOf(temperature) + "°C";
+        return temperature + "°C";
     }
 
     public String getLocation() {
