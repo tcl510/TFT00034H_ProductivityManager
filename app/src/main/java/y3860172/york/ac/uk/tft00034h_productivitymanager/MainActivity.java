@@ -1,8 +1,11 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -158,9 +161,31 @@ public class MainActivity extends AppCompatActivity {
 //        mAdapter.notifyDataSetChanged();
 //        testSave();
 //        testLoad();
-        saveData();
-
+//        saveData();
+        openImage();
     }
+
+    void openImage() {
+//        Intent intent = new Intent();
+//        Uri uri = Uri.parse("android.resource://y3860172.york.ac.uk.tft00034h_productivitymanager/drawable/tedted.jpg");
+//        intent.setAction(Intent.ACTION_VIEW);
+//        intent.setDataAndType(uri, "image/*");
+////        startActivity(intent);
+//        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+//        Uri uri = Uri.parse("android.resource://y3860172.york.ac.uk.tft00034h_productivitymanager/drawable/tedted.jpg");
+        Resources resources = this.getResources();
+        int resId = R.drawable.tedted;
+        Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + resources.getResourcePackageName(resId) + '/' + resources.getResourceTypeName(resId) + '/' + resources.getResourceEntryName(resId));
+        showPhoto(uri);
+    }
+
+    private void showPhoto(Uri photoUri) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(photoUri, "image/*");
+        startActivity(intent);
+    }
+
 
     //Assignment button
     public int ADD_ASSIGNMENT = 69;

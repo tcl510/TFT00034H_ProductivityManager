@@ -295,9 +295,24 @@ public class AddAssignment extends AppCompatActivity {
                 mPhotoList.add(0, new picture(photoFile.getAbsolutePath()));
                 mAdaptor.notifyItemInserted(0);
 
-                Log.d("camera", "picture binded");
+                Log.d("camera", photoFile.getAbsolutePath());
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "example.fileprovider",
+                        photoFile);
+//                Uri photoURI = Uri.parse("content:/" + photoFile.getAbsolutePath());
+//                Uri photoURI = Uri.fromFile(photoFile);
+                showPhoto(photoURI);
+
             }
         }
+
+    private void showPhoto(Uri photoUri) {
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(photoUri, "image/*");
+        startActivity(intent);
+    }
 
 
         public void onClickToggleTime (View v){

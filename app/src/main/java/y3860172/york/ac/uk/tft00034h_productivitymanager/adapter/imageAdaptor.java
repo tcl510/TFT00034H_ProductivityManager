@@ -1,11 +1,8 @@
 package y3860172.york.ac.uk.tft00034h_productivitymanager.adapter;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
@@ -103,23 +101,41 @@ public class imageAdaptor extends RecyclerView.Adapter {
 //                    Uri.fromFile(new File(temp.getImage_file_path()));
 //                    intent.setDataAndType(Uri.fromFile(new File(temp.getImage_file_path())),"image/*");
 //                    ((Activity) context).startActivityForResult(i,1);
-                    Log.d("error", temp.getImage_file_path());
-                    File file = new File(Environment.getExternalStorageDirectory(), temp.getImage_file_path());
-//                    Toast.makeText(MainActivity.this, file.getPath(), Toast.LENGTH_LONG).show();
-                    Uri path = Uri.fromFile(file);
-                    if (file.exists()) {
-                        Intent intent = new Intent();
-                        intent.setAction(android.content.Intent.ACTION_VIEW);
-                        intent.setDataAndType(path, "image/*");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        try {
-                            context.startActivity(intent);
-                            Log.d("error", "what");
-                        } catch (ActivityNotFoundException e) {
-                            Log.d("error", "error");
-                        }
-                    }
+//                    Log.d("error", temp.getImage_file_path());
+////                    File file = new File(Environment.getExternalStorageDirectory(), temp.getImage_file_path());
+//                    File file = new File(temp.getImage_file_path());
+////                    Toast.makeText(MainActivity.this, file.getPath(), Toast.LENGTH_LONG).show();
+//                    Uri path = Uri.fromFile(file);
+//                    if (file.exists()) {
+//                        Intent intent = new Intent();
+//                        intent.setAction(android.content.Intent.ACTION_VIEW);
+//                        intent.setDataAndType(path, "image/*");
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        try {
+//                            context.startActivity(intent);
+//                            Log.d("error", "what");
+//                        } catch (ActivityNotFoundException e) {
+//                            Log.d("error", "error");
+//                        }
+//                    }
+
+//                    Uri photoURI = FileProvider.getUriForFile(this,
+//                            "example.fileprovider",
+//                            photoFile);
+//                Uri photoURI = Uri.parse("content:/" + temp.getImage_file_path());
+                    Uri photo = Uri.fromFile(new File(temp.getImage_file_path()));
+                    Uri photoURI = FileProvider.getUriForFile(context,
+                            "example.fileprovider",
+                            new File(temp.getImage_file_path()));
+                    Intent intent = new Intent();
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(photoURI, "image/*");
+                    context.startActivity(intent);
+
                     //todo fix this shit
+                    Log.d("camera", temp.getImage_file_path());
+
 
 
 //                    Intent intent = new Intent();
