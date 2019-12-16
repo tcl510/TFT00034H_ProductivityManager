@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">TFT00034H_ProductivityManager</string>
+    <string name="app_name">Productivity Manager</string>
+    <string name="app_name_full">TFT00034H_ProductivityManager</string>
     <string name="wi_day_sunny">&#xf00d;</string>
     <string name="wi_day_cloudy">&#xf002;</string>
     <string name="wi_day_cloudy_gusts">&#xf000;</string>
