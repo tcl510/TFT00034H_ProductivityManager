@@ -32,27 +32,32 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Monday" />
+                android:onClick="unimplimented"
+                android:text="Mon" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tuesday" />
+                android:onClick="unimplimented"
+                android:text="Tues" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wednesday" />
+                android:onClick="unimplimented"
+                android:text="Wed" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thursday" />
+                android:onClick="unimplimented"
+                android:text="Thurs" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Friday" />
+                android:onClick="unimplimented"
+                android:text="Fri" />
 
         </com.google.android.material.tabs.TabLayout>
 

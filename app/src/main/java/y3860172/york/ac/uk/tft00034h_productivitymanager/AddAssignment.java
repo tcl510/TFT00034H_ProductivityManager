@@ -388,12 +388,32 @@ public class AddAssignment extends AppCompatActivity {
 //        }
 
     public void back() {
-        Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("assignment", payload());
-        i.putExtra("index", index);
-        setResult(Activity.RESULT_CANCELED, i);
-        finish();
+
+        if (assignmentMode == ASSIGNMENT_MODE_EDIT) {
+//            setResult(MainActivity.SEE_ASSIGNMENT, i);
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("assignment", payload());
+            i.putExtra("index", index);
+            setResult(Activity.RESULT_CANCELED, i);
+            finish();
+//            save();
+        } else {
+
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("assignment", payload());
+            i.putExtra("index", index);
+            setResult(Activity.RESULT_CANCELED, i);
+            finish();
+        }
+
     }
+//    public void back2(){
+//        Intent i = new Intent(this, MainActivity.class);
+//        i.putExtra("assignment", payload());
+//        i.putExtra("index", index);
+//        setResult(MainActivity.SEE_ASSIGNMENT, i);
+//        finish();
+//    }
 
     public void delete() {
         Intent i = new Intent(this, MainActivity.class);

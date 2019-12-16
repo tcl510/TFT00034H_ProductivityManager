@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -85,8 +86,36 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler();
 //        getLocation();
         checkPerms(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSION_REQUEST_LOCATION);
+        assignments = new ArrayList<>();
+        tabWarningMessage();
         initialize();
         card();
+
+    }
+
+    public void unimplimented(View view) {
+        Toast toast = Toast.makeText(this, "this feature has not be implimented", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    void tabWarningMessage() {
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                unimplimented(null);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override
@@ -150,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     public void initialize(){
         /*todo add gps https://github.com/rohitsthaa/retrofit-openweather   https://stackoverflow.com/questions/2227292/how-to-get-latitude-and-longitude-of-the-mobile-device-in-android https://github.com/UoY-TFTV-InteractiveMedia/MobileInteraction/blob/master/SensorExamples/Position/app/src/main/java/uk/ac/york/tftv/im/mi/position/MainActivity.java*/
         //call weather api
-        weather();
+//        weather();
         //start timer
         handler.postDelayed(runnable, 500);
         //make a new list of assignments
@@ -179,6 +208,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     String cityName = addresses.get(0).getAddressLine(0);
                     Log.d("location", cityName);
+                    lat = (float) location.getLatitude();
+                    lon = (float) location.getLongitude();
                     //super ghetto way of making it update only once every 3 location updateds to save api calls
                     counter += 1;
                     Log.d("location", String.valueOf(counter));
@@ -251,9 +282,10 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this,AddAssignment.class);
         startActivityForResult(i, ADD_ASSIGNMENT);
     }
-
     public static int SEE_ASSIGNMENT = 420;
     public static int DELETE_ASSIGNMENT = 2;
+    public float lat;
+    public float lon;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -261,12 +293,13 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == ADD_ASSIGNMENT && resultCode == Activity.RESULT_OK) {
             super.onActivityResult(requestCode, resultCode, data);
             Assignment assignment = data.getParcelableExtra("assignment");
-            Log.d("error", assignment.getNotes());
-
             if (assignment == null) {
                 Toast toast = Toast.makeText(this, "Assignment failed to add", Toast.LENGTH_SHORT);
                 toast.show();
             } else {
+                if (assignments == null) {
+                    Log.d("error", "yep its the assignments");
+                }
                 assignments.add(0, new assignment_card(assignment));
             }
             for (Card card : mCardList) {
@@ -291,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
                     mAdapter.notifyItemChanged(mCardList.indexOf(card));
                 }
             }
+
         }
         //if result code is delete
         if (resultCode == DELETE_ASSIGNMENT) {
@@ -310,10 +344,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     //getting weather thru api
     String weatherKey = "7676be54a54f4b58b79d8d3a5cf16936";
     public void weather(){
-        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?q=York,uk&APPID=" + weatherKey);
+//        http://api.openweathermap.org/data/2.5/weather?lat=53.9489518&lon=-1.0570599&APPID=7676be54a54f4b58b79d8d3a5cf16936
+        new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&APPID=" + weatherKey);
     }
 
     private class GetWeather extends AsyncTask<String, Void, String> {
@@ -425,40 +461,40 @@ public class MainActivity extends AppCompatActivity {
         }
 
         void setWeather(String weather_state, String tempature, String icon, String location, String night_day) {
-//            for (Card card: mCardList){
-//                if (card.getType() == Card.CARD_WEATHER){
-//                    ((weather_card)card).condition = weather_state.substring(0,1).toUpperCase() + weather_state.substring(1); //done capitalize first word
-//                    ((weather_card)card).temperature_string = tempature;
+            for (Card card : mCardList) {
+                if (card.getType() == Card.CARD_WEATHER) {
+                    ((weather_card) card).condition = weather_state.substring(0, 1).toUpperCase() + weather_state.substring(1); //done capitalize first word
+                    ((weather_card) card).temperature_string = tempature;
+
+                    //set picture
+                    ((weather_card) card).weather_image = icon;
+                    ((weather_card) card).night_day = night_day;
+
+                    //set location
+                    ((weather_card) card).location = location;
+
+//                    final Card set = mCardList.set(index, temp);
+                    weather_current = weather_state;
+                    mAdapter.notifyItemChanged(mCardList.indexOf(card));
+                }
+            }
+//            int index = 1;
+//            weather_card temp = (weather_card)mCardList.get(index);
 //
-//                    //set picture
-//                    ((weather_card)card).weather_image = icon;
-//                    ((weather_card)card).night_day = night_day;
 //
-//                    //set location
-//                    ((weather_card)card).location = location;
+//            temp.condition = weather_state.substring(0,1).toUpperCase() + weather_state.substring(1); //done capitalize first word
+//            temp.temperature_string = tempature;
 //
-////                    final Card set = mCardList.set(index, temp);
-//                    weather_current = weather_state;
-//                    mAdapter.notifyItemChanged(mCardList.indexOf(card));
-//                }
-//            }
-            int index = 1;
-            weather_card temp = (weather_card)mCardList.get(index);
-
-
-            temp.condition = weather_state.substring(0,1).toUpperCase() + weather_state.substring(1); //done capitalize first word
-            temp.temperature_string = tempature;
-
-            //set picture
-            temp.weather_image = icon;
-            temp.night_day = night_day;
-
-            //set location
-            temp.location = location;
-
-            final Card set = mCardList.set(index, temp);
-            weather_current = weather_state;
-            mAdapter.notifyItemChanged(index);
+//            //set picture
+//            temp.weather_image = icon;
+//            temp.night_day = night_day;
+//
+//            //set location
+//            temp.location = location;
+//
+//            final Card set = mCardList.set(index, temp);
+//            weather_current = weather_state;
+//            mAdapter.notifyItemChanged(index);
         }
     }
 
@@ -472,9 +508,10 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(assignments);
         prefsEditor.putString("assignments", json);
+        prefsEditor.putString("lat", String.valueOf(lat));
+        prefsEditor.putString("lon", String.valueOf(lon));
         prefsEditor.apply();
     }
-
     public void loadData(){
         SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
         Gson gson = new Gson();
@@ -482,7 +519,16 @@ public class MainActivity extends AppCompatActivity {
         Log.d("json", json);
         Type type = new TypeToken<List<assignment_card>>(){}.getType();
         //        assignments = (List<Card>) assignments_load;
-        assignments = gson.fromJson(json, type);
+//        assignments.add(0, new assignment_card("blah",new Date()));
+
+        if (assignments == null) {
+            assignments = new ArrayList<>();
+        } else {
+            assignments = gson.fromJson(json, type);
+            lat = Float.valueOf(mPrefs.getString("lat", "53.9489518"));
+            lon = Float.valueOf(mPrefs.getString("lon", "-1.0570599"));
+            weather();
+        }
 //        mAdapter.notifyDataSetChanged();
     }
 
@@ -539,5 +585,6 @@ public class MainActivity extends AppCompatActivity {
             // permissions this app might request.
         }
     }
+
 }
 

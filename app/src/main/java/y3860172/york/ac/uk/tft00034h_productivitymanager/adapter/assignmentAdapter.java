@@ -109,7 +109,7 @@ public class assignmentAdapter extends RecyclerView.Adapter {
                     assignment_card card = (assignment_card) TempAssignmentList.get(pos);
                     i.putExtra("index", pos);
                     i.putExtra("assignment", card.getThisAssignment());
-                    ((Activity) context).startActivityForResult(i, MainActivity.ADD_ASSIGNMENT);
+                    ((Activity) context).startActivityForResult(i, MainActivity.SEE_ASSIGNMENT);
                 }
             });
         }
