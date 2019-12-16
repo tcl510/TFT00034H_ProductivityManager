@@ -49,7 +49,6 @@ import y3860172.york.ac.uk.tft00034h_productivitymanager.adapter.cardAdapter;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.Card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignment_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.assignments_card;
-import y3860172.york.ac.uk.tft00034h_productivitymanager.model.tester_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.time_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.model.weather_card;
 import y3860172.york.ac.uk.tft00034h_productivitymanager.types.Assignment;
@@ -68,14 +67,14 @@ public class MainActivity extends AppCompatActivity {
     private List<Card> mCardList;
     public List<Card> assignments;
     public String weather_current;
-    private LocationManager l_mgr;
+    private LocationManager mlocationManager;
 
 
     public Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        checkPerms(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSION_REQUEST_LOCATION);
         if (Build.VERSION.SDK_INT < 16) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         //start handler
         handler = new Handler();
 //        getLocation();
-        checkPerms(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSION_REQUEST_LOCATION);
+
         assignments = new ArrayList<>();
         tabWarningMessage();
         initialize();
@@ -168,10 +167,8 @@ public class MainActivity extends AppCompatActivity {
         mCardList.add(new time_card());
         mCardList.add(new weather_card());
         mCardList.add(new assignments_card(assignments));
-
-
-        mCardList.add(new tester_card("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
-        mCardList.add(new assignments_card(assignments));
+//        mCardList.add(new tester_card("Ted Ted", "Default Subtitle goes here", "A great get together with my many brothers! waaaaa", R.drawable.tedted, R.drawable.tedtedparty));
+//        mCardList.add(new assignments_card(assignments));
         mAdapter = new cardAdapter(mCardList, this);
         mRecycleView.setAdapter(mAdapter);
 
@@ -191,10 +188,10 @@ public class MainActivity extends AppCompatActivity {
 //        checkPerms(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSION_REQUEST_LOCATION);
         //todo change names
         Log.d("location", "called");
-        l_mgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        mlocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         try {
-            l_mgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
+            mlocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     String location_string = "POSITION:\n" + "LAT: " + location.getLatitude() + "\n" + "LNG: " + location.getLongitude() + "\n" + "ACC: " + location.getAccuracy() + "m\n";
@@ -203,11 +200,11 @@ public class MainActivity extends AppCompatActivity {
                     List<Address> addresses = null;
                     try {
                         addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                        String cityName = addresses.get(0).getAddressLine(0);
+                        Log.d("location", cityName);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    String cityName = addresses.get(0).getAddressLine(0);
-                    Log.d("location", cityName);
                     lat = (float) location.getLatitude();
                     lon = (float) location.getLongitude();
                     //super ghetto way of making it update only once every 3 location updateds to save api calls
@@ -352,6 +349,10 @@ public class MainActivity extends AppCompatActivity {
         new GetWeather().execute("http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&APPID=" + weatherKey);
     }
 
+    public void weather(View view) {
+        weather();
+    }
+
     private class GetWeather extends AsyncTask<String, Void, String> {
         //based after https://github.com/UoY-TFTV-InteractiveMedia/MobileInteraction/blob/master/Practical4/app/src/main/java/uk/ac/york/tftv/im/mi/practical4/CatShow.java#L58
 
@@ -359,12 +360,11 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... urls) {
             URL url;
             try {
-                url = new URL(urls[0]); //set the url to be the first parameter sent in the list of urls. See note above.
+                //init url
+                url = new URL(urls[0]);
 
 
             } catch (MalformedURLException e) {
-                //Java requires us to handle the error "MalformedURLException", in case we pass an invalid URL.
-                //here we would show some kind of error, but let's just exit and return a blank string:
                 Log.d("something", e.toString());
                 return "something";
             }
@@ -372,6 +372,7 @@ public class MainActivity extends AppCompatActivity {
             StringBuilder sb = new StringBuilder();  //Stringbuilder is a helper class to build strings from remote sources (remember, we don't get all the data at once).
 
             try {
+                //inspried by bens excellent work
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //attempt to connect to the server
                 connection.connect();
                 BufferedReader bf = new BufferedReader(new InputStreamReader(connection.getInputStream())); //a bufferedreader is used to read from the data stream. this line hooks it to the connection
@@ -386,8 +387,7 @@ public class MainActivity extends AppCompatActivity {
                 return(sb.toString());//return the entire contents of the stringbuilder as a string. (this will be a JSON formatted string containing the cat fact)
 
             } catch (IOException e) {
-                //the above functions might raise an exception if there is an error communicating with the remote server (or there is a network issue)
-                //as before, let's just exit and return a blank string again:
+
                 Log.d("something", e.toString());
                 return "";
             }
@@ -401,13 +401,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             if(result.length()==0) {//remember we returned an empty string if there was an error. In that case lets return an error message.
 //                setWeather("Error!");
-                return;
             }
-
-            //If there hasn't been an error, "result" now contains a string in JSON format. We only want the fact out of it.
-            //Load the link in a web browser to see the kind of data we get: https://catfact.ninja/fact
-
-            //We have to grab the fact out of the JSON.
 
             String weatherMain;
             String temperature;
@@ -443,13 +437,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 location = json.getString("name");
 
-
                 setWeather(weatherMain, temperature, icon, location, night_day);
             }
             catch(JSONException e) {
                 Log.d("error", e.toString());
             }
-             //once the data has been collected, set the cat fact on the screen
         }
 
         String makeWeatherString(float temperature_value) {
@@ -478,23 +470,6 @@ public class MainActivity extends AppCompatActivity {
                     mAdapter.notifyItemChanged(mCardList.indexOf(card));
                 }
             }
-//            int index = 1;
-//            weather_card temp = (weather_card)mCardList.get(index);
-//
-//
-//            temp.condition = weather_state.substring(0,1).toUpperCase() + weather_state.substring(1); //done capitalize first word
-//            temp.temperature_string = tempature;
-//
-//            //set picture
-//            temp.weather_image = icon;
-//            temp.night_day = night_day;
-//
-//            //set location
-//            temp.location = location;
-//
-//            final Card set = mCardList.set(index, temp);
-//            weather_current = weather_state;
-//            mAdapter.notifyItemChanged(index);
         }
     }
 
@@ -518,18 +493,13 @@ public class MainActivity extends AppCompatActivity {
         String json = mPrefs.getString("assignments", "");
         Log.d("json", json);
         Type type = new TypeToken<List<assignment_card>>(){}.getType();
-        //        assignments = (List<Card>) assignments_load;
-//        assignments.add(0, new assignment_card("blah",new Date()));
-
+        assignments = gson.fromJson(json, type);
+        lat = Float.valueOf(mPrefs.getString("lat", "53.9489518"));
+        lon = Float.valueOf(mPrefs.getString("lon", "-1.0570599"));
         if (assignments == null) {
             assignments = new ArrayList<>();
-        } else {
-            assignments = gson.fromJson(json, type);
-            lat = Float.valueOf(mPrefs.getString("lat", "53.9489518"));
-            lon = Float.valueOf(mPrefs.getString("lon", "-1.0570599"));
-            weather();
         }
-//        mAdapter.notifyDataSetChanged();
+        weather();
     }
 
     //taken from android documentation

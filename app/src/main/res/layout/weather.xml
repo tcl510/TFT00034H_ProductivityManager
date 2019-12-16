@@ -67,6 +67,17 @@
                 app:layout_constraintStart_toStartOf="@+id/weather_location"
                 app:layout_constraintTop_toBottomOf="@+id/weather_location"
                 tools:text="Cloudy" />
+
+            <Button
+                android:id="@+id/refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:onClick="weather"
+                android:text="Refresh"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

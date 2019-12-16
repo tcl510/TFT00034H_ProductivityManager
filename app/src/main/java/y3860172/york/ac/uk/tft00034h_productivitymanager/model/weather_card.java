@@ -15,6 +15,7 @@ public class weather_card implements Card  {
     public String weather_image = "";
     //    public URL url;
     public String night_day;
+    public static final String CONNECT_TEXT = "Connect to the internet for weather data";
 
     public weather_card(String location, String condition, float temperature) {
         this.location = location;
@@ -24,7 +25,7 @@ public class weather_card implements Card  {
     }
     public weather_card(){
         this.location = "--";
-        this.condition = "Connect to the internet for weather data";//done not show weather card unless theres info
+        this.condition = CONNECT_TEXT;//done not show weather card unless theres info
         this.temperature_string = null;
         this.weather_image = null;
         this.night_day = "d";

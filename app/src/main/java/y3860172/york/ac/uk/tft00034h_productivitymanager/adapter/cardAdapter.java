@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,7 +42,7 @@ public class cardAdapter extends RecyclerView.Adapter{
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card,parent,false);
                 return new tester_cardViewHolder(itemView);
             case Card.CARD_WEATHER:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card2,parent,false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.weather, parent, false);
                 return new weather_cardViewHolder(itemView);
             case Card.CARD_ASSIGNMENTS:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_of,parent,false);
@@ -139,6 +140,7 @@ public class cardAdapter extends RecyclerView.Adapter{
         TextView weatherLocation;
         TextView weatherTempature;
         TextView weatherImage;
+        Button refresh;
 
         weather_cardViewHolder(View itemView) {
 
@@ -148,6 +150,7 @@ public class cardAdapter extends RecyclerView.Adapter{
             weatherLocation = itemView.findViewById(R.id.weather_location);
             weatherTempature = itemView.findViewById(R.id.weather_tempature);
             weatherImage = itemView.findViewById(R.id.weather_image);
+            refresh = itemView.findViewById(R.id.refresh);
         }
 
         void bindView(int position) {
@@ -155,12 +158,15 @@ public class cardAdapter extends RecyclerView.Adapter{
              weatherCondition.setText(card.getCondition());
             weatherLocation.setText(card.getLocation());
             weatherTempature.setText(card.getTemperature_string());
-
 //            weatherImage.setImageResource(card.getWeather_image());
             //14:36 https://www.youtube.com/watch?v=Vyqz_-sJGFk
-
             weatherImage.setText(card.getWeather_image());
             weatherImage.setTextColor(card.getDayNight());
+            if (card.getCondition() == weather_card.CONNECT_TEXT) {
+                refresh.setVisibility(View.VISIBLE);
+            } else {
+                refresh.setVisibility(View.GONE);
+            }
 
 //            Glide.with(context).load(card.weather_image).into(weatherImage);
 
